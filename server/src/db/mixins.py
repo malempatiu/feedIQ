@@ -11,6 +11,6 @@ class TimestampMixin(SQLModel):
     )
     updatedAt: datetime = Field(
         default_factory=None,
-        nullable=False,
+        nullable=True,
         sa_column_kwargs={"onupdate": datetime.now}
     )
