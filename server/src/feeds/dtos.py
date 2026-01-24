@@ -11,7 +11,6 @@ class PriorityEnum(Enum):
 class FeedbackCreateDTO(BaseModel):
     title: str = Field(min_length=10)
     detail: str = Field(min_length=20)
-    category: str | None = None
     priority: PriorityEnum | None = None
 
 
