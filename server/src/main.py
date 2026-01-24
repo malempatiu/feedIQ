@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.feeds.router import feeds_router
+from server.src.feeds.router import feeds_router
 
 app = FastAPI(title='feedIQ server')
 
