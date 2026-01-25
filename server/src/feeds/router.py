@@ -21,4 +21,9 @@ async def get_feedbacks(
 ):
     result = await feeds_service.get_feedbacks(page=page, limit=limit)
     return result
+
+@feeds_router.get('/{id}', status_code=status.HTTP_200_OK, response_model=FeedbackResponseDTO)
+async def get_feedback(id: int, feeds_service: FeedsService = Depends(get_feeds_service)):
+    result = await feeds_service.get_feedback(id)
+    return result
     

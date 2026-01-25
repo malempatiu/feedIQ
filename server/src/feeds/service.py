@@ -16,7 +16,7 @@ class FeedsService:
                 detail="Internal server error"
             )
 
-        return FeedbackResponseDTO.model_validate(feedback)
+        return feedback
     
     async def get_feedbacks(self, page: int = 0, limit: int = 25):
         feedbacks = await self.feeds_Repo.get_all(offset= page*25, limit=limit)
@@ -28,3 +28,9 @@ class FeedsService:
             totalPages=math.ceil(total_count / limit) if limit > 0 else 0
         )
         return dto
+    
+    async def get_feedback(self, id: int):
+        feedback = await self.feeds_Repo.get_by_id(id)
+        if not feedback:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Feedback not found!')
+        return feedback

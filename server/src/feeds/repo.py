@@ -16,8 +16,11 @@ class FeedsRepository(IFeedsRepository):
         return feedback
 
 
-    async def get_by_id(self, feedback_id: int):
-        pass
+    async def get_by_id(self, id: int):
+        statement = select(Feedback).where(Feedback.id==id)
+        result = await self.db.execute(statement)
+        feedback = result.scalars().first()
+        return feedback
 
 
     async def get_all(self, offset:int, limit: int):
