@@ -20,8 +20,15 @@ class FeedbackResponseDTO(BaseModel):
     id: int
     title: str
     detail: str
-    category: str | None
-    priority: str | None
+    category: str | None = None
+    priority: str | None = None
     createdAt: datetime
+    updatedAt: datetime | None = None
+
+class FeedbacksResponseDTO(BaseModel):
+    currentPage: int
+    limit: int
+    totalPages: int
+    feedbacks: list[FeedbackResponseDTO]
 
 

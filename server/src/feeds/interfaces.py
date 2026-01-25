@@ -17,7 +17,7 @@ class IFeedsRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_all(self) -> List[Feedback] | None:
+    async def get_all(self, offset:int, limit: int) -> List[Feedback]:
         """Get all feedback"""
         pass
 
@@ -30,4 +30,8 @@ class IFeedsRepository(ABC):
     async def delete(self, id: int) -> bool:
         """Delete a feedback"""
         pass
-    
+
+    @abstractmethod
+    async def get_total(self) -> int:
+        """Get total number of rows"""
+        pass
