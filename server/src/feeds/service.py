@@ -1,5 +1,5 @@
 from .interfaces import IFeedsRepository
-from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO
+from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO, FeedbackUpdateDTO
 from fastapi import HTTPException, status
 import math
 
@@ -40,3 +40,8 @@ class FeedsService:
         if not is_deleted:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Feedback not found!')
         return True
+    
+    async def update_feedback(self, id:int, dto: FeedbackUpdateDTO):
+        result = await self.feeds_Repo.update(id, dto)
+        return result
+

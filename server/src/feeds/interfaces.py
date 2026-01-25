@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from .dtos import FeedbackCreateDTO
+from .dtos import FeedbackCreateDTO, FeedbackUpdateDTO
 from .model import Feedback
 
 class IFeedsRepository(ABC):
@@ -22,7 +22,7 @@ class IFeedsRepository(ABC):
         pass
 
     @abstractmethod
-    async def update(self, feedback: FeedbackCreateDTO) -> Feedback | None:
+    async def update(self, id: int, feedback: FeedbackUpdateDTO) -> Feedback:
         """Update a feedback"""
         pass
 

@@ -1,8 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from .interfaces import IFeedsRepository
-from .dtos import FeedbackCreateDTO
+from .dtos import FeedbackCreateDTO, FeedbackUpdateDTO
 from .model import Feedback
 from sqlmodel import select, func
+from fastapi import HTTPException, status
 
 class FeedsRepository(IFeedsRepository):
     def __init__(self, db_session: AsyncSession):
@@ -33,9 +34,6 @@ class FeedsRepository(IFeedsRepository):
         result = await self.db.execute(statement)
         return result.scalar_one()
 
-    async def update(self, feedback: FeedbackCreateDTO) :
-        pass
-
     async def delete(self, id: int):
         feedback = await self.get_by_id(id)
         if not feedback:
@@ -43,3 +41,19 @@ class FeedsRepository(IFeedsRepository):
         await self.db.delete(feedback)
         await self.db.commit()
         return True
+    
+    async def update(self, id: int, dto: FeedbackUpdateDTO) :
+        feedback = await self.get_by_id(id)
+
+        if not feedback:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Feedback not found!')
+        
+        if dto.title is not None:
+            feedback.title = dto.title
+        if dto.detail is not None:
+            feedback.detail = dto.detail
+        if dto.priority is not None:
+            feedback.priority = dto.priority
+                
+        await self.db.commit()
+        return feedback

@@ -14,6 +14,12 @@ class FeedbackCreateDTO(BaseModel):
     priority: PriorityEnum | None = None
 
 
+class FeedbackUpdateDTO(BaseModel):
+    title: str | None = Field(default=None, min_length=10)
+    detail: str | None = Field(default=None, min_length=20)
+    priority: PriorityEnum | None = None
+
+
 class FeedbackResponseDTO(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

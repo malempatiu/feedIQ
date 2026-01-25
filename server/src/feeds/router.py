@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status
-from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO
+from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO, FeedbackUpdateDTO
 from .dependencies import get_feeds_service
 from .service import FeedsService
 
@@ -32,3 +32,13 @@ async def get_feedback(id: int, feeds_service: FeedsService = Depends(get_feeds_
 async def delete_feedback(id: int, feeds_service: FeedsService = Depends(get_feeds_service)):
     await feeds_service.delete_feedback(id)
     return {'message': 'success'}
+
+
+@feeds_router.patch('/{id}', status_code=status.HTTP_200_OK, response_model=FeedbackResponseDTO)
+async def update_feedback(
+    id: int,
+    dto: FeedbackUpdateDTO,
+    feeds_service: FeedsService = Depends(get_feeds_service)
+):
+    result = await feeds_service.update_feedback(id, dto)
+    return result
