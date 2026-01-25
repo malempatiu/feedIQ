@@ -34,3 +34,9 @@ class FeedsService:
         if not feedback:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Feedback not found!')
         return feedback
+    
+    async def delete_feedback(self, id: int):
+        is_deleted = await self.feeds_Repo.delete(id)
+        if not is_deleted:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Feedback not found!')
+        return True

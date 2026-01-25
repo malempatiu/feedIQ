@@ -33,8 +33,13 @@ class FeedsRepository(IFeedsRepository):
         result = await self.db.execute(statement)
         return result.scalar_one()
 
-    async def update(self, feedback: Feedback) :
+    async def update(self, feedback: FeedbackCreateDTO) :
         pass
 
-    async def delete(self, feedback_id: int):
-        return False
+    async def delete(self, id: int):
+        feedback = await self.get_by_id(id)
+        if not feedback:
+            return False
+        await self.db.delete(feedback)
+        await self.db.commit()
+        return True

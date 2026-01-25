@@ -27,3 +27,8 @@ async def get_feedback(id: int, feeds_service: FeedsService = Depends(get_feeds_
     result = await feeds_service.get_feedback(id)
     return result
     
+
+@feeds_router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_feedback(id: int, feeds_service: FeedsService = Depends(get_feeds_service)):
+    await feeds_service.delete_feedback(id)
+    return {'message': 'success'}
