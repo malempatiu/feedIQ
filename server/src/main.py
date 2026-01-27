@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from .feeds.router import feeds_router
+from .auth.router import user_router
 from fastapi.middleware.cors import CORSMiddleware
 
 origins = [
@@ -22,3 +23,4 @@ async def read_root():
     }
 
 app.include_router(router=feeds_router, prefix='/api/v1/feeds', tags=['feedbacks'])
+app.include_router(router=user_router, prefix='/api/v1/auth', tags=['authentication'])
