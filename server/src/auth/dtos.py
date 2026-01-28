@@ -7,6 +7,11 @@ class UserCreateDto(BaseModel):
     password: str = Field(min_length=8,  max_length=13)
 
 
+class UserLoginRequestDto(BaseModel):
+    email: str
+    password: str
+
+
 class UserResponseDto(BaseModel):
     id: int
     firstName: str = Field(alias='first_name')

@@ -17,3 +17,7 @@ class UserService:
         dto.password=hash_password
         user = await self.user_repo.create(dto)
         return user
+    
+    async def get_user(self, email: str):
+        user = await self.user_repo.get_user(email)
+        return user

@@ -2,8 +2,10 @@ from fastapi import APIRouter, Depends, status
 from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO, FeedbackUpdateDTO
 from .dependencies import get_feeds_service
 from .service import FeedsService
+from src.auth.dependencies import TokenBearer
 
 feeds_router = APIRouter()
+token_bearer = TokenBearer()
 
 @feeds_router.post('/', status_code=status.HTTP_201_CREATED, response_model=FeedbackResponseDTO)
 async def create_feedback(
@@ -17,8 +19,10 @@ async def create_feedback(
 async def get_feedbacks(
     page: int = 0,
     limit: int = 25,
-    feeds_service: FeedsService = Depends(get_feeds_service)
+    feeds_service: FeedsService = Depends(get_feeds_service),
+    token_details = Depends(token_bearer)
 ):
+    print(token_details)
     result = await feeds_service.get_feedbacks(page=page, limit=limit)
     return result
 
