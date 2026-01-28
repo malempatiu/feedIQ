@@ -20,9 +20,8 @@ async def get_feedbacks(
     page: int = 0,
     limit: int = 25,
     feeds_service: FeedsService = Depends(get_feeds_service),
-    token_details = Depends(token_bearer)
+    #token_details = Depends(token_bearer)
 ):
-    print(token_details)
     result = await feeds_service.get_feedbacks(page=page, limit=limit)
     return result
 

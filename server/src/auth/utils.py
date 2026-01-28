@@ -35,21 +35,11 @@ def create_token(user: User, expires_delta: timedelta | None = None):
 
 def decode_token(token: str) -> dict | None:
     try:
-        print(f'token: {token}')
         token_data = jwt.decode(
             jwt=token, key=settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM]
         )
 
         return token_data
-    except jwt.ExpiredSignatureError:
-        logging.error("Token has expired")
-        return None
-    except jwt.InvalidSignatureError:
-        logging.error("Invalid token signature")
-        return None
-    except jwt.DecodeError as e:
-        logging.error(f"Token decode error: {e}")
-        return None
-    except jwt.InvalidTokenError as e:
-        logging.error(f"Invalid token: {e}")
+    except jwt.PyJWTError as e:
+        logging.exception(e)
         return None

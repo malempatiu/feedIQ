@@ -28,7 +28,6 @@ class TokenBearer(HTTPBearer):
         token = http_creds.credentials
 
         token_data = decode_token(token)
-        print(f'***************************************{token_data}')
         if not token_data:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail='Not authorized')
