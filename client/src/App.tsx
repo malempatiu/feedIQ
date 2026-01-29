@@ -4,8 +4,8 @@ import {
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AppWrapper } from "./ui/AppWrapper";
-import { Feedbacks } from "./features/feedbacks/Feedbacks";
 import { Toaster } from "react-hot-toast";
+import Auth from "./features/users/AuthPage";
 
 
 const queryClient = new QueryClient();
@@ -14,7 +14,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppWrapper>
-        <Feedbacks />
+            <Auth />
       </AppWrapper>
       <ReactQueryDevtools initialIsOpen={false} />
       <Toaster
