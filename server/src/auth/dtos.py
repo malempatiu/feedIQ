@@ -18,5 +18,5 @@ class UserResponseDto(BaseModel):
     lastName: str = Field(alias='last_name')
     email: str
     password: str = Field(exclude=True)
-    isVerified: bool = Field(alias='is_verified')
+    isVerified: bool = Field(alias='is_verified', exclude=True)
     role: str
