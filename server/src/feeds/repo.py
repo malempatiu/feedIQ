@@ -20,14 +20,19 @@ class FeedsRepository(IFeedsRepository):
     async def get_by_id(self, id: int):
         statement = select(Feedback).where(Feedback.id==id)
         result = await self.db.execute(statement)
-        feedback = result.scalars().first()
-        return feedback
+        row = result.first()
+        if row:
+            feedback = row.tuple()[0]
+            return feedback
+        return None
 
 
     async def get_all(self, offset:int, limit: int):
         statement = select(Feedback).offset(offset).limit(limit)
-        results = await self.db.execute(statement)
-        return results.scalars().all()
+        result = await self.db.execute(statement)
+        sequence = result.all()
+        feedbacks = [row.tuple()[0] for row in sequence]
+        return feedbacks
     
     async def get_total(self) -> int:
         statement = select(func.count()).select_from(Feedback)
