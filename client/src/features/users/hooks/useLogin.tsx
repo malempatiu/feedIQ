@@ -1,12 +1,19 @@
+import { client } from '@api/Api';
+import { USER_QUERY_KEY } from '@shared/query-keys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { client } from '../../../api/Api';
+
+type Response = {
+  message: string;
+  token: string;
+}
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
   const { mutate: login, isPending } = useMutation({
-    mutationFn: (loginPayload: {email: string, password: string}) => client.post('/auth/login', loginPayload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+    mutationFn: (loginPayload: {email: string, password: string}) => client.post<Response>('auth/login', loginPayload),
+    onSuccess: (data) => {
+      localStorage.setItem('currentUser', data.token);
+      queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEY] });
     }
   });
 

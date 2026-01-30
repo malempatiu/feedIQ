@@ -1,5 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { client } from "../../../api/Api";
+import { client } from "@api/Api";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+
 
 type SignUpPayload = {
  firstName: string,
@@ -9,11 +11,11 @@ type SignUpPayload = {
 }
 
 export const useSignUp = () => {
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { mutate: signup, isPending } = useMutation({
-    mutationFn: (payload: SignUpPayload) => client.post('/auth/register', payload),
+    mutationFn: (payload: SignUpPayload) => client.post('auth/register', payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      navigate("login");
     },
   });
 

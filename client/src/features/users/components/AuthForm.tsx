@@ -1,6 +1,6 @@
-import { Button } from "../../../ui/Button";
-import { Input } from "../../../ui/Input";
+import { Input } from "@ui/Input";
 import type { LoginFormData, LoginFormErrors, RegisterFormData, RegisterFormErrors } from "../types";
+import { Button } from "@ui/Button";
 
 
 
@@ -10,6 +10,7 @@ type AuthFormProps = {
   errors: LoginFormErrors | RegisterFormErrors;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  isAuthenticating: boolean;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
@@ -18,6 +19,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   errors,
   onChange,
   onSubmit,
+  isAuthenticating
 }) => {
   const isLogin = type === "login";
 
@@ -85,7 +87,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
         </div>
       )} */}
 
-      <Button type='submit' variant='secondary' fullWidth>
+      <Button type='submit' variant='secondary' fullWidth disabled={isAuthenticating}>
+        { isAuthenticating ? <svg className="mr-3 size-5 animate-spin ..." viewBox="0 0 24 24"></svg> : null}
         {isLogin ? "Sign In" : "Create Account"}
       </Button>
     </form>

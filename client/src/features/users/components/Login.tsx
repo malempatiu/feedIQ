@@ -2,12 +2,12 @@ import { useState } from "react";
 import type { LoginFormData, LoginFormErrors } from "../types";
 import { AuthForm } from "./AuthForm";
 import { validateLoginForm } from "../utils";
+import { NavLink } from "react-router";
+import { useLogin } from "../hooks/useLogin";
 
-interface LoginProps {
-  onToggle: () => void;
-}
 
-const Login: React.FC<LoginProps> = ({ onToggle }) => {
+const Login = () => {
+  const {login, isPending} = useLogin();
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
@@ -37,9 +37,7 @@ const Login: React.FC<LoginProps> = ({ onToggle }) => {
       return;
     }
 
-    console.log("Login data:", formData);
-    alert(`Login successful!\nEmail: ${formData.email}`);
-
+    login(formData);
     setFormData({ email: "", password: "" });
   };
 
@@ -56,17 +54,18 @@ const Login: React.FC<LoginProps> = ({ onToggle }) => {
         errors={errors}
         onChange={handleChange}
         onSubmit={handleSubmit}
+        isAuthenticating={isPending}
       />
 
       <div className='mt-6 text-center'>
         <p className='text-gray-600'>
           Don't have an account?{" "}
-          <button
-            onClick={onToggle}
+          <NavLink
+            to='../register'
             className='text-blue-600 hover:text-blue-700 font-medium cursor-pointer'
           >
             Sign Up
-          </button>
+          </NavLink>
         </p>
       </div>
     </div>

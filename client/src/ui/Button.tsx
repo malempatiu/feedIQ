@@ -4,6 +4,7 @@ interface ButtonProps {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "text" | "slate" | "danger";
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -12,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   variant = "primary",
   fullWidth = false,
+  disabled = false
 }) => {
   const baseClasses =
     "py-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition cursor-pointer";
@@ -31,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       className={`${baseClasses} ${variantClasses[variant]} ${widthClass}`}
+      disabled={disabled}
     >
       {children}
     </button>

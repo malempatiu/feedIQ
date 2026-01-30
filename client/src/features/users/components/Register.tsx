@@ -2,12 +2,12 @@ import { useState } from "react";
 import type { RegisterFormData, RegisterFormErrors } from "../types";
 import { validateRegisterForm } from "../utils";
 import { AuthForm } from "./AuthForm";
+import { NavLink } from "react-router";
+import { useSignUp } from "../hooks/useRegister";
 
-interface RegisterProps {
-  onToggle: () => void;
-}
 
-const Register: React.FC<RegisterProps> = ({ onToggle }) => {
+const Register = () => {
+  const {signup, isPending} = useSignUp();
   const [formData, setFormData] = useState<RegisterFormData>({
     firstName: "",
     lastName: "",
@@ -41,11 +41,8 @@ const Register: React.FC<RegisterProps> = ({ onToggle }) => {
       return;
     }
 
-    console.log("Register data:", formData);
-    alert(
-      `Registration successful!\nName: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}`,
-    );
-
+   
+    signup(formData)
     setFormData({ firstName: "", lastName: "", email: "", password: "" });
   };
 
@@ -62,17 +59,18 @@ const Register: React.FC<RegisterProps> = ({ onToggle }) => {
         errors={errors}
         onChange={handleChange}
         onSubmit={handleSubmit}
+        isAuthenticating={isPending}
       />
 
       <div className='mt-6 text-center'>
         <p className='text-gray-600'>
           Already have an account?{" "}
-          <button
-            onClick={onToggle}
+          <NavLink
+            to='../login'
             className='text-blue-600 hover:text-blue-700 font-medium cursor-pointer'
           >
             Sign In
-          </button>
+          </NavLink>
         </p>
       </div>
     </div>
