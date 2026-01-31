@@ -15,13 +15,11 @@ const AuthLayout = () => {
 const UnAuthenticatedRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<Navigate to='/auth/login' replace />} />
-      <Route path='*' element={<Navigate to='/auth/login' replace />} />
       <Route path='auth' element={<AuthLayout />}>
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
-        <Route path='*' element={<Login />} />
       </Route>
+      <Route path='*' element={<Navigate to='/auth/login' replace />} />
     </Routes>
   );
 };

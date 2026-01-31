@@ -1,6 +1,7 @@
+import { Feedbacks } from "@features/feedbacks/Feedbacks";
 import { Navigate, Outlet, Route, Routes } from "react-router";
 
-const AuthenticatedAppLayout = () => {
+const AuthenticatedLayout = () => {
   return (
     <div>
       <Outlet />
@@ -11,12 +12,11 @@ const AuthenticatedAppLayout = () => {
 const AuthenticatedRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<Navigate to='/feedIQ/feedbacks' replace />} />
-      <Route path='*' element={<Navigate to='/feedIQ/feedbacks' replace />} />
-      <Route path='feedIQ' element={<AuthenticatedAppLayout />}>
-        <Route path='feedbacks' element={<div>Home</div>} />
-        <Route path='feedbacks/:id' element={<div>detail</div>} />
+      <Route element={<AuthenticatedLayout />}>
+        <Route path='feedbacks' element={<Feedbacks />} />
+        <Route path='feedbacks/:id' element={<div>Detail</div>} />
       </Route>
+      <Route path='*' element={<Navigate to='/feedbacks' replace />} />
     </Routes>
   );
 };

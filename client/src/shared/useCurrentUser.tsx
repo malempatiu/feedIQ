@@ -13,7 +13,7 @@ type User = {
 export function useCurrentUser() {
   const { isLoading, data: user } = useQuery({
     queryKey: [USER_QUERY_KEY],
-    queryFn: () => client.get<User>('auth/user/me', {'Authorization': `Bearer ${localStorage.getItem('currentUser')}`}),
+    queryFn: () => client.get<User>('auth/user/me'),
     staleTime: Infinity,
   });
 
