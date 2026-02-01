@@ -19,6 +19,12 @@ class ApiClient {
       "Authorization": ''
     }
 
+    const token = localStorage.getItem('currentUser');
+
+    if (url.includes('auth/user/me') && !token) {
+      return null as T
+    }
+
     if (!url.includes('login') && !url.includes('register')) {
       headers['Authorization'] = `Bearer ${localStorage.getItem('currentUser')}`
     }

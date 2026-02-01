@@ -1,10 +1,16 @@
 import { Feedbacks } from "@features/feedbacks/Feedbacks";
+import { useLogout } from "@shared/useLogout";
+import { Button } from "@ui/Button";
 import { Navigate, Outlet, Route, Routes } from "react-router";
 
 const AuthenticatedLayout = () => {
+  const {logout} = useLogout();
   return (
     <div>
       <Outlet />
+      <Button variant='text' onClick={() => logout()}>
+        Logout
+      </Button>
     </div>
   );
 };
