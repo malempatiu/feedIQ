@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { FeedbackCard } from "../../ui/FeedbackCard";
-import { FeedbacksContainer } from "../../ui/FeedbacksContainer";
-import { FeedbacksSkeletonLoader } from "../../ui/FeedbacksSkeletonLoader";
-import { NoFeedback } from "../../ui/NoFeedback";
 import { useFeedbacks } from "./useFeedbacks";
 import toast from "react-hot-toast";
+import { NoFeedback } from "@ui/NoFeedback";
+import { FeedbacksContainer } from "@ui/FeedbacksContainer";
+import { FeedbacksSkeletonLoader } from "@ui/FeedbacksSkeletonLoader";
+import { FeedbackCard } from "@ui/FeedbackCard";
 
 const Feedbacks = () => {
   const {data, showLoading, errorMessage} = useFeedbacks();

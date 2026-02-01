@@ -27,7 +27,7 @@ async def login_user(dto: UserLoginRequestDto, user_service: UserService =Depend
     return {'message': 'Login successful!', 'token': token}
 
 
-@user_router.get('/user/profile', status_code=status.HTTP_200_OK, response_model=UserResponseDto)
+@user_router.get('/user/me', status_code=status.HTTP_200_OK, response_model=UserResponseDto)
 async def get_user_profile(user_service: UserService = Depends(get_user_service), token_details=Depends(token_bearer)):
     user = await user_service.get_user(token_details['email'])
     if not user:
