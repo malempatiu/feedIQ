@@ -19,13 +19,13 @@ class ApiClient {
       "Authorization": ''
     }
 
-    if (!url.includes('auth')) {
+    if (!url.includes('login') && !url.includes('register')) {
       headers['Authorization'] = `Bearer ${localStorage.getItem('currentUser')}`
     }
 
     const config: RequestInit = {
       ...options,
-     
+     headers
     };
 
     const response = await fetch(url, config);
