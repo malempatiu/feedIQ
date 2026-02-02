@@ -3,14 +3,15 @@ from .interfaces import IFeedsRepository
 from .dtos import FeedbackCreateDTO, FeedbackUpdateDTO
 from .model import Feedback
 from sqlmodel import select, func
+from sqlalchemy.orm import joinedload
 from fastapi import HTTPException, status
 
 class FeedsRepository(IFeedsRepository):
     def __init__(self, db_session: AsyncSession):
         self.db = db_session
 
-    async def create(self, dto: FeedbackCreateDTO):
-        feedback = Feedback(title=dto.title, detail=dto.detail, priority=dto.priority)
+    async def create(self, user_id: int, dto: FeedbackCreateDTO):
+        feedback = Feedback(title=dto.title, detail=dto.detail, priority=dto.priority, userId=user_id)
         self.db.add(feedback)
         await self.db.commit()
         await self.db.refresh(feedback)
@@ -28,10 +29,11 @@ class FeedsRepository(IFeedsRepository):
 
 
     async def get_all(self, offset:int, limit: int):
-        statement = select(Feedback).offset(offset).limit(limit)
+        statement = select(Feedback).options(
+            joinedload(Feedback.user)  # type: ignore[arg-type]
+        ).offset(offset).limit(limit)
         result = await self.db.execute(statement)
-        sequence = result.all()
-        feedbacks = [row.tuple()[0] for row in sequence]
+        feedbacks = result.scalars().all()
         return feedbacks
     
     async def get_total(self) -> int:

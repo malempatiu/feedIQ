@@ -10,10 +10,10 @@ token_bearer = TokenBearer()
 @feeds_router.post('/', status_code=status.HTTP_201_CREATED, response_model=FeedbackResponseDTO)
 async def create_feedback(
     create_dto: FeedbackCreateDTO, 
-    _=Depends(token_bearer),
+    token_details=Depends(token_bearer),
     feeds_service: FeedsService = Depends(get_feeds_service),
 ):
-    result = await feeds_service.create_feedback(create_dto)
+    result = await feeds_service.create_feedback(token_details['id'], create_dto)
     return result
 
 @feeds_router.get('/', status_code=status.HTTP_200_OK, response_model=FeedbacksResponseDTO)

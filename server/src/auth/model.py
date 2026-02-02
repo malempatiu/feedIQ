@@ -1,5 +1,9 @@
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Relationship
 from src.db.mixins import TimestampMixin
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.feeds.model import Feedback
 
 class User(TimestampMixin, SQLModel, table=True):
     __tablename__:str='users'
@@ -10,3 +14,4 @@ class User(TimestampMixin, SQLModel, table=True):
     password: str = Field(exclude=True, nullable=False)
     is_verified: bool = Field(default=False, nullable=False)
     role: str = Field(default="user", nullable=False)
+    feedbacks: list["Feedback"] | None = Relationship(back_populates='user')

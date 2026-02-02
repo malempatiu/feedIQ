@@ -7,7 +7,7 @@ class IFeedsRepository(ABC):
     """Interface for Feedback repository operations"""
 
     @abstractmethod
-    async def create(self, feedback: FeedbackCreateDTO) -> Feedback:
+    async def create(self, user_id: int, feedback: FeedbackCreateDTO) -> Feedback:
         """Create a new feedback"""
         pass
 
