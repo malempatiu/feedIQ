@@ -35,3 +35,9 @@ async def get_user_profile(user_service: UserService = Depends(get_user_service)
             status_code=status.HTTP_403_FORBIDDEN, detail="User does not exist")
 
     return user
+
+@user_router.post('/password-reset', status_code=status.HTTP_201_CREATED)
+async def password_reset(dto: UserLoginRequestDto, user_service: UserService = Depends(get_user_service)):
+    await user_service.reset_password(dto)
+    return {'message': 'success'}
+    

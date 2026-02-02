@@ -1,3 +1,4 @@
+from src.auth.dtos import UserLoginRequestDto
 from .interfaces import IUserRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 from .dtos import UserCreateDto
@@ -24,3 +25,14 @@ class UserRepository(IUserRepository):
             user = row.tuple()[0]
             return user
         return None
+    
+
+    async def update_password(self, dto: UserLoginRequestDto) -> bool:
+        user = await self.get_user(email=dto.email)
+        if user:
+            user.password = dto.password
+            self.db.add(user)
+            await self.db.commit()
+            return True
+        
+        return False
