@@ -1,5 +1,5 @@
 from .interfaces import IUserRepository
-from .dtos import UserCreateDto
+from .dtos import UserCreateDto, UserLoginRequestDto
 from fastapi import HTTPException, status
 from .utils import get_password_hash
 
@@ -21,3 +21,20 @@ class UserService:
     async def get_user(self, email: str):
         user = await self.user_repo.get_user(email)
         return user
+    
+    async def reset_password(self, dto: UserLoginRequestDto):
+        user = await self.get_user(dto.email)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, 
+                detail="User does not exist"
+            )
+        hash_password = get_password_hash(dto.password)
+        dto.password = hash_password
+        updated = await self.user_repo.update_password(dto)
+        if not updated:
+            raise HTTPException(
+                status_code=status.HTTP_304_NOT_MODIFIED,
+                detail="Can't update password"
+            )
+
