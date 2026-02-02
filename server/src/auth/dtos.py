@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 
 class UserCreateDto(BaseModel):
     firstName: str = Field(max_length=10)
@@ -13,6 +13,8 @@ class UserLoginRequestDto(BaseModel):
 
 
 class UserResponseDto(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     firstName: str = Field(alias='first_name')
     lastName: str = Field(alias='last_name')

@@ -8,8 +8,8 @@ class FeedsService:
     def __init__(self, repo: IFeedsRepository):
         self.feeds_Repo = repo
     
-    async def create_feedback(self, dto: FeedbackCreateDTO):
-        feedback = await self.feeds_Repo.create(dto)
+    async def create_feedback(self, user_id: int, dto: FeedbackCreateDTO):
+        feedback = await self.feeds_Repo.create(user_id, dto)
         if not feedback:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
