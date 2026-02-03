@@ -18,9 +18,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
   type,
   formData,
   errors,
+  isAuthenticating,
   onChange,
   onSubmit,
-  isAuthenticating
 }) => {
   const isLogin = type === "login";
   const isPasswordReset = type === "password-reset";
@@ -30,7 +30,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       {!isLogin &&
         !isPasswordReset &&
         "firstName" in formData &&
-        "lastName" in formData && (
+        "lastName" in formData ? (
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <Input
               id='firstName'
@@ -53,7 +53,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
               error={"lastName" in errors ? errors.lastName : ""}
             />
           </div>
-        )}
+        ) : null}
 
       {"email" in formData ? (
         <Input
