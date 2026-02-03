@@ -9,6 +9,11 @@ class PriorityEnum(Enum):
     HIGH='High'
     BLOCKER='Blocker'
 
+class SentimentEnum(Enum):
+    POSITIVE='Positive'
+    NEGATIVE='Negative'
+    NEUTRAL='Neutral'
+
 class FeedbackCreateDTO(BaseModel):
     title: str = Field(min_length=10)
     detail: str = Field(min_length=20)
@@ -29,6 +34,8 @@ class FeedbackResponseDTO(BaseModel):
     detail: str
     category: str | None = None
     priority: str | None = None
+    votes: int | None = 0
+    sentiment: str | None = None
     createdAt: datetime
     updatedAt: datetime | None = None
     user: UserResponseDto | None = None

@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field, Relationship
-from .dtos import PriorityEnum
+from .dtos import PriorityEnum, SentimentEnum
 from src.db.mixins import TimestampMixin
 from typing import TYPE_CHECKING
 
@@ -14,5 +14,7 @@ class Feedback(TimestampMixin, SQLModel, table=True):
     detail: str
     category: str | None = Field(default=None)
     priority: PriorityEnum | None = Field(default=None)
+    sentiment: SentimentEnum | None = Field(default=None)
+    votes: int | None = Field(default=0)
     userId: int | None = Field(default=None, foreign_key="users.id")
     user: "User" = Relationship(back_populates="feedbacks")
