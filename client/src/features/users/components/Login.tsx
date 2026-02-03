@@ -5,18 +5,15 @@ import { validateLoginForm } from "../utils";
 import { NavLink } from "react-router";
 import { useLogin } from "../hooks/useLogin";
 
+const initialFormData: LoginFormData = {
+  email: "",
+  password: "",
+};
 
 const Login = () => {
-  const {login, isPending} = useLogin();
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = useState<LoginFormErrors>({
-    email: "",
-    password: "",
-  });
+  const {login, isLoggingIn} = useLogin();
+  const [formData, setFormData] = useState<LoginFormData>(initialFormData);
+  const [errors, setErrors] = useState<LoginFormErrors>(initialFormData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,7 +35,7 @@ const Login = () => {
     }
 
     login(formData);
-    setFormData({ email: "", password: "" });
+    setFormData(initialFormData);
   };
 
   return (
@@ -54,7 +51,7 @@ const Login = () => {
         errors={errors}
         onChange={handleChange}
         onSubmit={handleSubmit}
-        isAuthenticating={isPending}
+        isAuthenticating={isLoggingIn}
       />
 
       <div className='mt-6 text-center'>

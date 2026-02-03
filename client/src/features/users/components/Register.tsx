@@ -3,24 +3,19 @@ import type { RegisterFormData, RegisterFormErrors } from "../types";
 import { validateRegisterForm } from "../utils";
 import { AuthForm } from "./AuthForm";
 import { NavLink } from "react-router";
-import { useSignUp } from "../hooks/useRegister";
+import { useRegister } from "../hooks/useRegister";
 
+const initialFormData: RegisterFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+};
 
 const Register = () => {
-  const {signup, isPending} = useSignUp();
-  const [formData, setFormData] = useState<RegisterFormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = useState<RegisterFormErrors>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+  const {register, isRegistering} = useRegister();
+  const [formData, setFormData] = useState<RegisterFormData>(initialFormData);
+  const [errors, setErrors] = useState<RegisterFormErrors>(initialFormData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,14 +31,14 @@ const Register = () => {
 
     const validationErrors = validateRegisterForm(formData);
 
-    if (Object.values(validationErrors).some((error) => error)) {
+    if (Object.values(validationErrors).some((error) => error.length > 0)) {
       setErrors(validationErrors);
       return;
     }
 
    
-    signup(formData)
-    setFormData({ firstName: "", lastName: "", email: "", password: "" });
+    register(formData)
+    setFormData(initialFormData);
   };
 
   return (
@@ -59,7 +54,7 @@ const Register = () => {
         errors={errors}
         onChange={handleChange}
         onSubmit={handleSubmit}
-        isAuthenticating={isPending}
+        isAuthenticating={isRegistering}
       />
 
       <div className='mt-6 text-center'>

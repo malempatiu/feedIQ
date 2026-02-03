@@ -1,23 +1,16 @@
 import { client } from "@api/Api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import type { RegisterFormData } from "../types";
 
-
-type SignUpPayload = {
- firstName: string,
- lastName: string,
- email:string,
- password: string
-}
-
-export const useSignUp = () => {
+export const useRegister = () => {
   const navigate = useNavigate();
-  const { mutate: signup, isPending } = useMutation({
-    mutationFn: (payload: SignUpPayload) => client.post('auth/register', payload),
+  const { mutate: register, isPending } = useMutation({
+    mutationFn: (payload: RegisterFormData) => client.post('auth/register', payload),
     onSuccess: () => {
       navigate("login");
     },
   });
 
-  return { signup, isPending };
+  return { register, isRegistering: isPending };
 };

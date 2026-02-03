@@ -4,19 +4,16 @@ import { AuthForm } from "./AuthForm";
 import { validatePasswordResetForm } from "../utils";
 import { usePasswordReset } from "../hooks/usePasswordReset";
 
-const PasswordReset = () => {
-  const {resetPassword, isPending} = usePasswordReset();
-  const [formData, setFormData] = useState<PasswordResetFormData>({
-    email: "",
-    newPassword: "",
-    repeatedNewPassword: "",
-  });
+const initialFormData: PasswordResetFormData = {
+  email: "",
+  newPassword: "",
+  repeatedNewPassword: "",
+};
 
-  const [errors, setErrors] = useState<PasswordResetFormErrors>({
-    email: "",
-    newPassword: "",
-    repeatedNewPassword: "",
-  });
+const PasswordReset = () => {
+  const {resetPassword, isResetting} = usePasswordReset();
+  const [formData, setFormData] = useState<PasswordResetFormData>(initialFormData);
+  const [errors, setErrors] = useState<PasswordResetFormErrors>(initialFormData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,7 +44,7 @@ const PasswordReset = () => {
     }
 
     resetPassword({email: formData.email, password: formData.newPassword})
-    setFormData({ newPassword: "", repeatedNewPassword: "", email:'' });
+    setFormData(initialFormData);
   };
 
   return (
@@ -63,7 +60,7 @@ const PasswordReset = () => {
         errors={errors}
         onChange={handleChange}
         onSubmit={handleSubmit}
-        isAuthenticating={isPending}
+        isAuthenticating={isResetting}
       />
     </div>
   );

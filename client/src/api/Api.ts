@@ -1,4 +1,3 @@
-// ApiClient.ts
 import { ApiError, ValidationError, type ValidationDetail } from "./errors";
 
 class ApiClient {
@@ -36,12 +35,10 @@ class ApiClient {
 
     const response = await fetch(url, config);
 
-    // No content - return empty object early before trying to parse JSON
     if (response.status === 204) {
       return {} as T;
     }
 
-    // Try to parse body as JSON for error detail
     const data = await response.json().catch(() => null);
 
     if (!response.ok) {
