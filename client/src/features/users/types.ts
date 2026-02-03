@@ -1,35 +1,20 @@
-export interface LoginFormData {
+export type LoginFormData = {
   email: string;
   password: string;
 }
+export type LoginFormErrors = LoginFormData;
 
-export interface RegisterFormData {
+export type RegisterFormData = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
 }
+export type RegisterFormErrors = RegisterFormData;
 
-export interface LoginFormErrors {
-  email: string;
-  password: string;
-}
-
-export interface PasswordResetFormData {
+export type PasswordResetFormData = {
   email:string;
   newPassword: string;
   repeatedNewPassword: string;
 }
-
-export interface PasswordResetFormErrors {
-  email:string;
-  newPassword: string;
-  repeatedNewPassword: string;
-}
-
-export interface RegisterFormErrors {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
+export type PasswordResetFormErrors = PasswordResetFormData;

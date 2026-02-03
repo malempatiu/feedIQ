@@ -1,21 +1,18 @@
 import { client } from "@api/Api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import type { LoginFormData } from "../types";
 
-type Response = {
-  message: string;
-  token: string;
-};
 
 export const usePasswordReset = () => {
   const navigate = useNavigate();
-  const { mutate: resetPassword, isPending } = useMutation({
-    mutationFn: (payload: { email: string; password: string }) =>
-      client.post<Response>("auth/password-reset", payload),
+  const { mutate: resetPassword, isPending, error } = useMutation({
+    mutationFn: (payload: LoginFormData) =>
+      client.post("auth/password-reset", payload),
     onSuccess: () => {
       navigate('login')
     },
   });
 
-  return { resetPassword, isPending };
+  return { resetPassword, isResetting: isPending, errorMessage: error?.message };
 };

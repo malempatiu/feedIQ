@@ -3,20 +3,19 @@ import type { PasswordResetFormData, PasswordResetFormErrors } from "../types";
 import { AuthForm } from "./AuthForm";
 import { validatePasswordResetForm } from "../utils";
 import { usePasswordReset } from "../hooks/usePasswordReset";
+import { ErrorMessage } from "@ui/ErrorMessage";
+import { FormHeader } from "./FormHeader";
+
+const initialFormData: PasswordResetFormData = {
+  email: "",
+  newPassword: "",
+  repeatedNewPassword: "",
+};
 
 const PasswordReset = () => {
-  const {resetPassword, isPending} = usePasswordReset();
-  const [formData, setFormData] = useState<PasswordResetFormData>({
-    email: "",
-    newPassword: "",
-    repeatedNewPassword: "",
-  });
-
-  const [errors, setErrors] = useState<PasswordResetFormErrors>({
-    email: "",
-    newPassword: "",
-    repeatedNewPassword: "",
-  });
+  const {resetPassword, isResetting, errorMessage} = usePasswordReset();
+  const [formData, setFormData] = useState<PasswordResetFormData>(initialFormData);
+  const [errors, setErrors] = useState<PasswordResetFormErrors>(initialFormData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,23 +46,20 @@ const PasswordReset = () => {
     }
 
     resetPassword({email: formData.email, password: formData.newPassword})
-    setFormData({ newPassword: "", repeatedNewPassword: "", email:'' });
+    setFormData(initialFormData);
   };
 
   return (
     <div>
-      <div className='text-center mb-8'>
-        <h2 className='text-2xl font-bold text-gray-800 mb-2'>Welcome Back</h2>
-        <p className='text-gray-600'>Sign in to continue to your account</p>
-      </div>
-
+      <FormHeader heading="Change your password" text=""/>
+      {errorMessage ? <ErrorMessage message={errorMessage}/> : null}
       <AuthForm
         type='password-reset'
         formData={formData}
         errors={errors}
         onChange={handleChange}
         onSubmit={handleSubmit}
-        isAuthenticating={isPending}
+        isAuthenticating={isResetting}
       />
     </div>
   );

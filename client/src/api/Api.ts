@@ -1,5 +1,5 @@
-// ApiClient.ts
 import { ApiError, ValidationError, type ValidationDetail } from "./errors";
+import type { ApiResponse } from "./types";
 
 class ApiClient {
   private baseUrl: string;
@@ -11,7 +11,7 @@ class ApiClient {
   private async request<T>(
     endpoint: string,
     options: RequestInit = {}
-  ): Promise<T> {
+  ): Promise<ApiResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
     const headers = {
       "Content-Type": "application/json",
@@ -22,7 +22,7 @@ class ApiClient {
     const token = localStorage.getItem('currentUser');
 
     if (url.includes('auth/user/me') && !token) {
-      return null as T
+      return {data: null} as ApiResponse<T>
     }
 
     if (!url.includes('login') && !url.includes('register')) {
@@ -36,18 +36,16 @@ class ApiClient {
 
     const response = await fetch(url, config);
 
-    // No content - return empty object early before trying to parse JSON
     if (response.status === 204) {
-      return {} as T;
+      return {} as ApiResponse<T>;
     }
 
-    // Try to parse body as JSON for error detail
     const data = await response.json().catch(() => null);
 
     if (!response.ok) {
       // Pydantic validation error from FastAPI
       if (response.status === 422 && Array.isArray(data?.detail)) {
-        throw new ValidationError(data.detail as ValidationDetail[]);
+        throw new ApiError(ValidationError.getFieldErrors(data.detail as ValidationDetail[]), response.status)
       }
 
       // Other server errors - detail is usually a string
@@ -57,14 +55,17 @@ class ApiClient {
       );
     }
 
-    return data as T;
+    return {
+      data,
+      error: null
+    };
   }
 
-  async get<T>(endpoint: string, headers?: HeadersInit): Promise<T> {
+  async get<T>(endpoint: string, headers?: HeadersInit) {
     return this.request<T>(endpoint, { method: "GET", headers });
   }
 
-  async post<T>(endpoint: string, data?: unknown, headers?: HeadersInit): Promise<T> {
+  async post<T>(endpoint: string, data?: unknown, headers?: HeadersInit) {
     return this.request<T>(endpoint, {
       method: "POST",
       body: JSON.stringify(data),
@@ -72,7 +73,7 @@ class ApiClient {
     });
   }
 
-  async put<T>(endpoint: string, data?: unknown, headers?: HeadersInit): Promise<T> {
+  async put<T>(endpoint: string, data?: unknown, headers?: HeadersInit) {
     return this.request<T>(endpoint, {
       method: "PUT",
       body: JSON.stringify(data),
@@ -80,7 +81,7 @@ class ApiClient {
     });
   }
 
-  async patch<T>(endpoint: string, data?: unknown, headers?: HeadersInit): Promise<T> {
+  async patch<T>(endpoint: string, data?: unknown, headers?: HeadersInit) {
     return this.request<T>(endpoint, {
       method: "PATCH",
       body: JSON.stringify(data),
@@ -88,7 +89,7 @@ class ApiClient {
     });
   }
 
-  async delete<T>(endpoint: string, headers?: HeadersInit): Promise<T> {
+  async delete<T>(endpoint: string, headers?: HeadersInit) {
     return this.request<T>(endpoint, { method: "DELETE", headers });
   }
 }
