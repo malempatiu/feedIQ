@@ -1,4 +1,4 @@
-import type { LoginFormData, LoginFormErrors, RegisterFormData, RegisterFormErrors } from "./types";
+import type { LoginFormData, LoginFormErrors, PasswordResetFormData, PasswordResetFormErrors, RegisterFormData, RegisterFormErrors } from "./types";
 
 const validateEmail = (email: string): string => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -24,6 +24,14 @@ export const validateLoginForm = (formData: LoginFormData): LoginFormErrors => {
     email: validateEmail(formData.email),
     password: validatePassword(formData.password),
   };
+};
+
+export const validatePasswordResetForm = (formData: PasswordResetFormData): PasswordResetFormErrors => {
+  return {
+    email: validateEmail(formData.email),
+    newPassword: validatePassword(formData.newPassword),
+    repeatedNewPassword: validatePassword(formData.newPassword),
+  }
 };
 
 export const validateRegisterForm = (formData: RegisterFormData): RegisterFormErrors => {

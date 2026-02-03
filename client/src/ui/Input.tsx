@@ -7,6 +7,7 @@ interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   error?: string;
+  disabled?: boolean;
 }
 
 const Input: React.FC<Partial<InputProps>> = ({
@@ -18,6 +19,7 @@ const Input: React.FC<Partial<InputProps>> = ({
   onChange,
   placeholder,
   error,
+  disabled=false
 }) => {
   return (
     <div>
@@ -32,6 +34,7 @@ const Input: React.FC<Partial<InputProps>> = ({
         onChange={onChange}
         className='w-full px-4 py-3 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition'
         placeholder={placeholder}
+        disabled={disabled}
       />
       {error && <p className='mt-1 text-sm text-red-600'>{error}</p>}
     </div>
