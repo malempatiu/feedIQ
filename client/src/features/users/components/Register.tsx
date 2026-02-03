@@ -5,6 +5,7 @@ import { AuthForm } from "./AuthForm";
 import { NavLink } from "react-router";
 import { useRegister } from "../hooks/useRegister";
 import { ErrorMessage } from "@ui/ErrorMessage";
+import { FormHeader } from "./FormHeader";
 
 const initialFormData: RegisterFormData = {
   firstName: "",
@@ -44,13 +45,8 @@ const Register = () => {
 
   return (
     <div>
-      <div className='text-center mb-8'>
-        <h2 className='text-2xl font-bold text-gray-800 mb-2'>Create Account</h2>
-        <p className='text-gray-600'>Sign up to get started</p>
-      </div>
-
+      <FormHeader heading='Create Account' text='Sign up to get started' />
       {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
-
       <AuthForm
         type='register'
         formData={formData}
@@ -59,7 +55,6 @@ const Register = () => {
         onSubmit={handleSubmit}
         isAuthenticating={isRegistering}
       />
-
       <div className='mt-6 text-center'>
         <p className='text-gray-600'>
           Already have an account?{" "}

@@ -4,6 +4,7 @@ import { AuthForm } from "./AuthForm";
 import { validatePasswordResetForm } from "../utils";
 import { usePasswordReset } from "../hooks/usePasswordReset";
 import { ErrorMessage } from "@ui/ErrorMessage";
+import { FormHeader } from "./FormHeader";
 
 const initialFormData: PasswordResetFormData = {
   email: "",
@@ -50,13 +51,8 @@ const PasswordReset = () => {
 
   return (
     <div>
-      <div className='text-center mb-8'>
-        <h2 className='text-2xl font-bold text-gray-800 mb-2'>Welcome Back</h2>
-        <p className='text-gray-600'>Sign in to continue to your account</p>
-      </div>
-
+      <FormHeader heading="Change your password" text=""/>
       {errorMessage ? <ErrorMessage message={errorMessage}/> : null}
-
       <AuthForm
         type='password-reset'
         formData={formData}

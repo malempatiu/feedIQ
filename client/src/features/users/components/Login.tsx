@@ -5,6 +5,7 @@ import { validateLoginForm } from "../utils";
 import { NavLink } from "react-router";
 import { useLogin } from "../hooks/useLogin";
 import { ErrorMessage } from "@ui/ErrorMessage";
+import { FormHeader } from "./FormHeader";
 
 const initialFormData: LoginFormData = {
   email: "",
@@ -41,11 +42,7 @@ const Login = () => {
 
   return (
     <div>
-      <div className='text-center mb-8'>
-        <h2 className='text-2xl font-bold text-gray-800 mb-2'>Welcome Back</h2>
-        <p className='text-gray-600'>Sign in to continue to your account</p>
-      </div>
-
+      <FormHeader heading='Welcome Back' text='Sign in to continue to your account' />
       {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
       <AuthForm
         type='login'
@@ -55,7 +52,6 @@ const Login = () => {
         onSubmit={handleSubmit}
         isAuthenticating={isLoggingIn}
       />
-
       <div className='mt-6 text-center'>
         <p className='text-gray-600'>
           Don't have an account?{" "}
