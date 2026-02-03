@@ -15,6 +15,18 @@ export interface LoginFormErrors {
   password: string;
 }
 
+export interface PasswordResetFormData {
+  email:string;
+  newPassword: string;
+  repeatedNewPassword: string;
+}
+
+export interface PasswordResetFormErrors {
+  email:string;
+  newPassword: string;
+  repeatedNewPassword: string;
+}
+
 export interface RegisterFormErrors {
   firstName: string;
   lastName: string;
