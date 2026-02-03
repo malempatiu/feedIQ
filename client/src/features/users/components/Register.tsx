@@ -4,6 +4,7 @@ import { validateRegisterForm } from "../utils";
 import { AuthForm } from "./AuthForm";
 import { NavLink } from "react-router";
 import { useRegister } from "../hooks/useRegister";
+import { ErrorMessage } from "@ui/ErrorMessage";
 
 const initialFormData: RegisterFormData = {
   firstName: "",
@@ -13,7 +14,7 @@ const initialFormData: RegisterFormData = {
 };
 
 const Register = () => {
-  const {register, isRegistering} = useRegister();
+  const {register, isRegistering, errorMessage} = useRegister();
   const [formData, setFormData] = useState<RegisterFormData>(initialFormData);
   const [errors, setErrors] = useState<RegisterFormErrors>(initialFormData);
 
@@ -47,6 +48,8 @@ const Register = () => {
         <h2 className='text-2xl font-bold text-gray-800 mb-2'>Create Account</h2>
         <p className='text-gray-600'>Sign up to get started</p>
       </div>
+
+      {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
 
       <AuthForm
         type='register'

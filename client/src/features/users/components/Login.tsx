@@ -4,6 +4,7 @@ import { AuthForm } from "./AuthForm";
 import { validateLoginForm } from "../utils";
 import { NavLink } from "react-router";
 import { useLogin } from "../hooks/useLogin";
+import { ErrorMessage } from "@ui/ErrorMessage";
 
 const initialFormData: LoginFormData = {
   email: "",
@@ -11,7 +12,7 @@ const initialFormData: LoginFormData = {
 };
 
 const Login = () => {
-  const {login, isLoggingIn} = useLogin();
+  const {login, isLoggingIn, errorMessage} = useLogin();
   const [formData, setFormData] = useState<LoginFormData>(initialFormData);
   const [errors, setErrors] = useState<LoginFormErrors>(initialFormData);
 
@@ -45,6 +46,7 @@ const Login = () => {
         <p className='text-gray-600'>Sign in to continue to your account</p>
       </div>
 
+      {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
       <AuthForm
         type='login'
         formData={formData}

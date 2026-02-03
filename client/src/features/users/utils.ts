@@ -22,7 +22,7 @@ const validatePassword = (password: string): string => {
 
 const validateName = (name: string, fieldName: string): string => {
   if (!name?.trim().length) return `${fieldName} is required`;
-  if (name.length < 5) return `${fieldName} must be at least 2 characters`;
+  if (name.length < 5) return `${fieldName} must be at least 5 characters`;
   return '';
 };
 

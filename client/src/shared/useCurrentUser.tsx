@@ -11,11 +11,11 @@ type User = {
 }
 
 export function useCurrentUser() {
-  const { isLoading, data: user } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: [USER_QUERY_KEY],
     queryFn: () => client.get<User>('auth/user/me'),
     staleTime: Infinity,
   });
 
-  return { isLoading, user, isAuthenticated: !!user };
+  return { isLoading, user: data?.data, isAuthenticated: !!data?.data };
 }

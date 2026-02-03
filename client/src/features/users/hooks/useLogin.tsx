@@ -10,13 +10,14 @@ type Response = {
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
-  const { mutate: login, isPending } = useMutation({
+  const { mutate: login, isPending, error } = useMutation({
     mutationFn: (loginPayload: LoginFormData) => client.post<Response>('auth/login', loginPayload),
-    onSuccess: (data) => {
-      localStorage.setItem('currentUser', data.token);
+    onSuccess: ({data}) => {
+      localStorage.setItem('currentUser', (data!).token);
       queryClient.invalidateQueries({ queryKey: [USER_QUERY_KEY] });
     }
   });
 
-  return { login, isLoggingIn: isPending };
+
+  return { login, isLoggingIn: isPending, errorMessage: error?.message };
 }

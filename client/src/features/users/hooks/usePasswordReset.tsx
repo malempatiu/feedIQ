@@ -6,7 +6,7 @@ import type { LoginFormData } from "../types";
 
 export const usePasswordReset = () => {
   const navigate = useNavigate();
-  const { mutate: resetPassword, isPending } = useMutation({
+  const { mutate: resetPassword, isPending, error } = useMutation({
     mutationFn: (payload: LoginFormData) =>
       client.post("auth/password-reset", payload),
     onSuccess: () => {
@@ -14,5 +14,5 @@ export const usePasswordReset = () => {
     },
   });
 
-  return { resetPassword, isResetting: isPending };
+  return { resetPassword, isResetting: isPending, errorMessage: error?.message };
 };

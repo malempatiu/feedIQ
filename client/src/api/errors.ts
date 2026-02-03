@@ -14,20 +14,19 @@ export class ApiError extends Error {
   }
 }
 
-export class ValidationError extends ApiError {
-  errors: ValidationDetail[];
-
-  constructor(errors: ValidationDetail[]) {
-    super("Validation failed", 422);
-    this.name = "ValidationError";
-    this.errors = errors;
-  }
-
-  getFieldErrors(): Record<string, string[]> {
-    return this.errors.reduce<Record<string, string[]>>((acc, error) => {
+export class ValidationError {
+  static getFieldErrors = (errors: ValidationDetail[]): string => {
+    const fieldErrors = errors.reduce<Record<string, string[]>>((acc, error) => {
       const field = error.loc[error.loc.length - 1];
       acc[field] = [...(acc[field] || []), error.msg];
       return acc;
     }, {});
+
+    return Object.entries(fieldErrors)
+      .map(([field, messages]) => {
+        const messageList = messages.map(msg => `  • ${msg}`).join('\n');
+        return `${field}:\n${messageList}`;
+      })
+      .join('\n\n');
   }
 }
