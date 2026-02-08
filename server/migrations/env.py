@@ -11,7 +11,7 @@ from src.config import get_settings
 from src.db.models import *
 
 settings = get_settings()
-DATABASE_URL = f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
+DATABASE_URL = f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@localhost:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

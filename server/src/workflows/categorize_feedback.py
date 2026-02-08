@@ -39,24 +39,19 @@ class State(TypedDict):
     generation: GeneratorState
     evaluation: EvaluationState
 
-
+allowed_categories_prompt = """
+    Allowed Categories: 
+    You must choose one and only one of the following values:
+    UI, UX, Bug, Feature, Enhancement, Performance, Documentation, Other.
+"""
 
 async def category_generator(state: State):
-    messages = [SystemMessage(content="""You are an AI assistant that categorizes user feedback for a SaaS application.
+    messages = [SystemMessage(content=f"""You are an AI assistant that categorizes user feedback for a SaaS application.
     Your Task:
      Analyze the user’s feedback and select exactly one category from the list below. 
      Then provide a short, factual reason explaining why the feedback belongs to that category.
 
-    Allowed Categories: 
-    You must choose one and only one of the following values:
-    UI, UX, Bug, Feature, Enhancement, Performance, Documentation, Other.
-
-    Output Format:
-    You must always return your response in the following JSON format:
-    {
-      "category": "<ONE of the allowed categories>",
-      "reason": "<Brief explanation of why the feedback fits this category>"
-    }
+    {allowed_categories_prompt}
 
     Rules:
      - Choose exactly one category.
@@ -64,7 +59,7 @@ async def category_generator(state: State):
      - Do not suggest solutions or opinions.
      - Always return valid JSON.
     """),
-                HumanMessage(content=f"Categorize the feedback: feedback_title: {state['title']}, feedback_detail: {state['detail']}")
+    HumanMessage(content=f"Categorize the feedback: feedback_title: {state['title']}, feedback_detail: {state['detail']}")
     ]
     
     llm_structured = get_model().with_structured_output(GeneratorState)
@@ -72,7 +67,7 @@ async def category_generator(state: State):
     return {'generation': response}
 
 async def category_evaluator(state: State):
-    messages = [SystemMessage(content="""You are an AI assistant responsible for evaluating the correctness of feedback categorization for a SaaS application.
+    messages = [SystemMessage(content=f"""You are an AI assistant responsible for evaluating the correctness of feedback categorization for a SaaS application.
     Inputs You Will Receive:
     You will be given:
      - User feedback (raw text written by the user)
@@ -84,9 +79,7 @@ async def category_evaluator(state: State):
      - Verify that the reason logically supports the chosen category.
      - Be strict but fair — minor wording issues in the reason are acceptable if the category is correct.                       
      
-    Allowed Categories: 
-    You must choose one and only one of the following values:
-    UI, UX, Bug, Feature, Enhancement, Performance, Documentation, Other.
+    {allowed_categories_prompt}
 
     Evaluation Criteria:
     Mark the categorization as correct if:
@@ -97,12 +90,6 @@ async def category_evaluator(state: State):
      - The chosen category is misleading or inaccurate.
      - The reason contradicts the feedback or category.
     
-    Output Format:
-    You must always return a valid JSON object in the following format:
-    {
-        "is_categorized_correctly": true | false,
-        "feedback": "<Only include this field if is_categorized_correctly is false>"
-    }
     
     Rules for you:
     - If is_categorized_correctly is true, do not include feedback.
@@ -125,7 +112,7 @@ async def category_evaluator(state: State):
 
 
 async def category_fixer(state: State):
-    messages = [SystemMessage(content="""You are an AI assistant responsible for fixing incorrect feedback categorizations for a SaaS application.
+    messages = [SystemMessage(content=f"""You are an AI assistant responsible for fixing incorrect feedback categorizations for a SaaS application.
     Inputs You Will Receive:
     You will be given:
     - Original user feedback (raw text)
@@ -136,16 +123,7 @@ async def category_fixer(state: State):
     - Carefully follow the evaluator’s guidance.
     - Produce a corrected categorization that best fits the feedback.
 
-    Allowed Categories: 
-    You must choose one and only one of the following values:
-    UI, UX, Bug, Feature, Enhancement, Performance, Documentation, Other.
-
-    Output Format:
-    You must always return your response in the following JSON format:
-    {
-      "category": "<ONE of the allowed categories>",
-      "reason": "<Brief explanation of why the feedback fits this category>"
-    }
+    {allowed_categories_prompt}
 
     Rules:
     - Choose exactly one category.
@@ -204,17 +182,10 @@ feedback_categorize_builder.add_conditional_edges(
 
 async def categorize_feedback(title: str, detail: str):
     optimizer_workflow = feedback_categorize_builder.compile()
-    print(optimizer_workflow.get_graph().draw_mermaid())
-    print(await optimizer_workflow.ainvoke(
-        Command(
-            update={
-                'title': 'Add tags for solutions', 
-                'detail': 'Easier to search for solutions based on a specific stack.'
-                }
-        ))
-    )
+    #optimizer_workflow.get_graph().draw_mermaid())
+    response = await optimizer_workflow.ainvoke(Command(update={'title': title, 'detail': detail}))
+    return response['generation'].category
     
-
-
+    
 if __name__ == '__main__':
     asyncio.run(categorize_feedback('',''))

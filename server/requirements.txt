@@ -30,6 +30,8 @@ httpx==0.28.1
 httpx-sse==0.4.3
 idna==3.11
 iniconfig==2.3.0
+inngest==0.5.15
+jcs==0.2.1
 Jinja2==3.1.6
 jiter==0.13.0
 jsonpatch==1.33
