@@ -11,7 +11,13 @@ class FeedsRepository(IFeedsRepository):
         self.db = db_session
 
     async def create(self, user_id: int, dto: FeedbackCreateDTO):
-        feedback = Feedback(title=dto.title, detail=dto.detail, priority=dto.priority, userId=user_id)
+        feedback = Feedback(
+            title=dto.title, 
+            detail=dto.detail, 
+            priority=dto.priority, 
+            userId=user_id,
+            category=dto.category
+        )
         self.db.add(feedback)
         await self.db.commit()
         await self.db.refresh(feedback)
@@ -61,6 +67,8 @@ class FeedsRepository(IFeedsRepository):
             feedback.detail = dto.detail
         if dto.priority is not None:
             feedback.priority = dto.priority
+        if dto.category is not None:
+            feedback.category = dto.category
                 
         await self.db.commit()
         return feedback

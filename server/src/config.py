@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import lru_cache
-from pydantic import Field
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings
 
 
@@ -34,6 +34,8 @@ class Settings(BaseSettings):
     JWT_SECRET: str = Field(default="supersecret", validation_alias="JWT_SECRET", alias_priority=2)
     JWT_ALGORITHM: str = Field(
         default="HS256", validation_alias="JWT_ALGORITHM", alias_priority=2)
+    
+    OPENAI_API_KEY: SecretStr | None = None
 
     class Config:
         env_file = ".env"

@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from enum import Enum
-from src.auth.dtos import UserResponseDto
 
 class PriorityEnum(Enum):
     LOW='Low'
@@ -18,12 +17,14 @@ class FeedbackCreateDTO(BaseModel):
     title: str = Field(min_length=10)
     detail: str = Field(min_length=20)
     priority: PriorityEnum | None = None
+    category: str | None = None
 
 
 class FeedbackUpdateDTO(BaseModel):
     title: str | None = Field(default=None, min_length=10)
     detail: str | None = Field(default=None, min_length=20)
     priority: PriorityEnum | None = None
+    category: str | None = None
 
 
 class FeedbackResponseDTO(BaseModel):
@@ -38,7 +39,6 @@ class FeedbackResponseDTO(BaseModel):
     sentiment: str | None = None
     createdAt: datetime
     updatedAt: datetime | None = None
-    user: UserResponseDto | None = None
 
 
 class FeedbacksResponseDTO(BaseModel):

@@ -16,6 +16,42 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-      
+    networks:
+      - app-network
+  
+  server:
+    build: .
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM}
+      INNGEST_DEV: 1
+      INNGEST_BASE_URL: http://inngest:8288
+    depends_on:
+      - db
+      - inngest
+    networks:
+      - app-network
+
+  inngest:
+    image: inngest/inngest:v0.27.0
+    command: 'inngest dev -u http://server:8000/api/inngest'
+    ports:
+      - '8288:8288'
+    networks:
+      - app-network
+
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

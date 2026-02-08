@@ -2,6 +2,7 @@ from .interfaces import IFeedsRepository
 from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO, FeedbackUpdateDTO
 from fastapi import HTTPException, status
 import math
+from src.workflows.categorize_feedback import categorize_feedback
 
 
 class FeedsService:
@@ -44,4 +45,10 @@ class FeedsService:
     async def update_feedback(self, id:int, dto: FeedbackUpdateDTO):
         result = await self.feeds_Repo.update(id, dto)
         return result
+    
+
+    async def categorize_feedback(self, id: int, dto: FeedbackCreateDTO):
+        if not dto.category:
+            category = await categorize_feedback(title=dto.title, detail=dto.detail)
+            await self.update_feedback(id, FeedbackUpdateDTO(category=category))
 

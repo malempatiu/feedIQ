@@ -3,6 +3,8 @@ from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO, 
 from .dependencies import get_feeds_service
 from .service import FeedsService
 from src.auth.dependencies import TokenBearer
+from src.background_tasks.client import inngest_client
+from inngest import Event
 
 feeds_router = APIRouter()
 token_bearer = TokenBearer()
@@ -14,6 +16,17 @@ async def create_feedback(
     feeds_service: FeedsService = Depends(get_feeds_service),
 ):
     result = await feeds_service.create_feedback(token_details['id'], create_dto)
+    if not create_dto.category:
+        await inngest_client.send(
+            events=Event(
+                name="feedback/categorize",
+                data= {
+                    "id": result.id,  
+                    "title": result.title,
+                    "detail": result.detail
+                }
+            )
+        )
     return result
 
 @feeds_router.get('/', status_code=status.HTTP_200_OK, response_model=FeedbacksResponseDTO)
@@ -36,7 +49,7 @@ async def get_feedback(
     return result
     
 
-@feeds_router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
+@feeds_router.delete('/{id}')
 async def delete_feedback(
     id: int, 
     _=Depends(token_bearer),
