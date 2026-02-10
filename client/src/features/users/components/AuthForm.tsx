@@ -2,6 +2,7 @@ import { Input } from "@ui/Input";
 import type { LoginFormData, LoginFormErrors, PasswordResetFormData, PasswordResetFormErrors, RegisterFormData, RegisterFormErrors } from "../types";
 import { Button } from "@ui/Button";
 import { NavLink } from "react-router";
+import { AnimatedDots } from "@ui/AnimatedDots";
 
 
 
@@ -113,9 +114,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
       <Button type='submit' variant='secondary' fullWidth disabled={isAuthenticating}>
         {isAuthenticating ? (
-          <svg className='mr-3 size-5 animate-spin ...' viewBox='0 0 24 24'></svg>
-        ) : null}
-        {isLogin ? "Sign In" : isPasswordReset ? "Reset Password" : "Create Account"}
+          <AnimatedDots color="bg-gray-0" />
+        ) : 
+        isLogin ? "Sign In" : isPasswordReset ? "Reset Password" : "Create Account"}
       </Button>
     </form>
   );
