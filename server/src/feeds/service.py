@@ -20,7 +20,7 @@ class FeedsService:
         return feedback
     
     async def get_feedbacks(self, page: int = 0, limit: int = 25):
-        feedbacks = await self.feeds_Repo.get_all(offset= page*25, limit=limit)
+        feedbacks = await self.feeds_Repo.get_all(offset= page*limit, limit=limit)
         total_count = await self.feeds_Repo.get_total()
         dto = FeedbacksResponseDTO(
             currentPage=page, 

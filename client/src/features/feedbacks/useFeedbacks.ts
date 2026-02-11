@@ -20,16 +20,16 @@ type FeedbacksData = {
   feedbacks: Feedback[]
 }
 
-const useFeedbacks = (page: number = 0, limit:number=25) => {
+const useFeedbacks = (page: number = 0, limit:number=5) => {
   const {data, isPending, error} = useQuery({
     queryKey: ['feeds', {page, limit}],
-    queryFn: () => client.get<FeedbacksData>('feeds'),
+    queryFn: () => client.get<FeedbacksData>(`feeds?page=${page}&limit=${limit}`),
   })
 
   const feedbacks = data?.data?.feedbacks?.map((feedback) => ({...feedback, votes: 10, commentsCount: 5, category: 'Enhancement'})) ?? [];
 
   return {
-    data:  data ? {...data, feedbacks} : {limit, currentPage: page, totalPages: 0, feedbacks},
+    data:  data ? {...data.data, feedbacks} : {limit, currentPage: page, totalPages: 0, feedbacks},
     showLoading: isPending,
     errorMessage: error?.message
   }

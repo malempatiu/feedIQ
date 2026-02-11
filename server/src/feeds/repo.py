@@ -35,9 +35,7 @@ class FeedsRepository(IFeedsRepository):
 
 
     async def get_all(self, offset:int, limit: int):
-        statement = select(Feedback).options(
-            joinedload(Feedback.user)  # type: ignore[arg-type]
-        ).offset(offset).limit(limit)
+        statement = select(Feedback).offset(offset).limit(limit)
         result = await self.db.execute(statement)
         feedbacks = result.scalars().all()
         return feedbacks
