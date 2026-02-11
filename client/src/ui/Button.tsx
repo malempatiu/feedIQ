@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false
 }) => {
   const baseClasses =
-    "py-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition cursor-pointer";
+    "flex flex-row items-center justify-center py-3 px-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition cursor-pointer";
 
   const variantClasses: Record<string, string> = {
     primary: "bg-purple-600 text-white hover:bg-purple-h",
@@ -26,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({
     danger: "bg-danger-600 text-white hover:bg-danger-h",
   };
 
-  const widthClass = fullWidth ? "w-full" : "";
+  const widthClass = fullWidth ? "w-full" : "w-fit";
 
   return (
     <button
