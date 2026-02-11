@@ -17,7 +17,6 @@ const Feedbacks = () => {
     }
   }, [errorMessage]);
 
-  console.log(data)
 
   return (
     <div className='flex flex-col gap-3.5 max-w-4xl py-8 mx-auto'>

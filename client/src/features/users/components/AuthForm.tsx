@@ -111,10 +111,13 @@ const AuthForm: React.FC<AuthFormProps> = ({
         </div>
       )}
 
-      <Button type='submit' variant='secondary' fullWidth disabled={isAuthenticating}>
-        {isAuthenticating ? (
-          <svg className='mr-3 size-5 animate-spin ...' viewBox='0 0 24 24'></svg>
-        ) : null}
+      <Button 
+        type='submit' 
+        variant='secondary' 
+        fullWidth 
+        disabled={isAuthenticating} 
+        isPending={isAuthenticating}
+      >
         {isLogin ? "Sign In" : isPasswordReset ? "Reset Password" : "Create Account"}
       </Button>
     </form>

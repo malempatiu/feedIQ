@@ -1,20 +1,20 @@
-interface ButtonProps {
-  type?: "button" | "submit" | "reset";
-  onClick?: () => void;
-  children: React.ReactNode;
-  variant?: "primary" | "secondary" | "text" | "slate" | "danger";
-  fullWidth?: boolean;
-  disabled?: boolean;
-}
+import { Button as HeadlessButton } from "@headlessui/react";
+import type { ComponentProps } from "react";
 
-const Button: React.FC<ButtonProps> = ({
+type ButtonProps = ComponentProps<typeof HeadlessButton> & {
+  variant?: "primary" | "secondary" | "text" | "slate" | "danger";
+  isPending?: boolean;
+  fullWidth?: boolean;
+};
+
+const Button = ({
   type = "button",
-  onClick,
-  children,
   variant = "primary",
   fullWidth = false,
-  disabled = false
-}) => {
+  isPending = false,
+  children,
+  ...props
+}: ButtonProps) => {
   const baseClasses =
     "flex flex-row items-center justify-center py-3 px-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition cursor-pointer";
 
@@ -29,15 +29,46 @@ const Button: React.FC<ButtonProps> = ({
   const widthClass = fullWidth ? "w-full" : "w-fit";
 
   return (
-    <button
+    <HeadlessButton
       type={type}
-      onClick={onClick}
       className={`${baseClasses} ${variantClasses[variant]} ${widthClass}`}
-      disabled={disabled}
+      {...props}
     >
-      {children}
-    </button>
+      {isPending ? <Spinner variant={variant} /> : children}
+    </HeadlessButton>
   );
 };
+
+const Spinner = ({variant}: ButtonProps) => {
+  return (
+    <span aria-hidden className='flex inset-0 justify-center items-center'>
+      <svg
+        className='w-4 h-4 gray-0 animate-spin'
+        viewBox='0 0 24 24'
+        stroke={variant === "text" ? "#3A4374" : "#FFFFFF"}
+      >
+        <circle
+          cx='12'
+          cy='12'
+          r='10'
+          strokeWidth='4'
+          fill='none'
+          className='opacity-25'
+        />
+        <circle
+          cx='12'
+          cy='12'
+          r='10'
+          strokeWidth='4'
+          strokeLinecap='round'
+          fill='none'
+          pathLength='100'
+          strokeDasharray='60 140'
+          strokeDashoffset='0'
+        />
+      </svg>
+    </span>
+  );
+}
 
 export { Button };

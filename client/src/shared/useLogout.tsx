@@ -16,7 +16,6 @@ const useLogout = () => {
   const {mutate, error} = useMutation({
     mutationFn: deleteToken,
     onSuccess: () => {
-      console.log('ksjfalksjlkds')
       queryClient.invalidateQueries({queryKey: [USER_QUERY_KEY]})
     }
   })
