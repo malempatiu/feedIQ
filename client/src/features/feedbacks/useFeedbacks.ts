@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import { client } from '../../api/Api';
+import { client } from '@/api/Api';
 
 type Feedback = {
   id: number;

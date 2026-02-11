@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useFeedbacks } from "./useFeedbacks";
 import toast from "react-hot-toast";
-import { NoFeedback } from "@ui/NoFeedback";
-import { FeedbacksContainer } from "@ui/FeedbacksContainer";
-import { FeedbacksSkeletonLoader } from "@ui/FeedbacksSkeletonLoader";
-import { FeedbackCard } from "@ui/FeedbackCard";
-import { Pagination } from "@ui/Pagination";
+import { NoFeedback } from "@/ui/NoFeedback";
+import { FeedbacksContainer } from "@/ui/FeedbacksContainer";
+import { FeedbacksSkeletonLoader } from "@/ui/FeedbacksSkeletonLoader";
+import { FeedbackCard } from "@/ui/FeedbackCard";
+import { Pagination } from "@/ui/Pagination";
 
 const Feedbacks = () => {
   const [currentPage, setCurrentPage] = useState (0);

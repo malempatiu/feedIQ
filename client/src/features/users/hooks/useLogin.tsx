@@ -1,5 +1,5 @@
-import { client } from '@api/Api';
-import { USER_QUERY_KEY } from '@shared/query-keys';
+import { client } from '@/api/Api';
+import { USER_QUERY_KEY } from '@/shared/query-keys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { LoginFormData } from '../types';
 

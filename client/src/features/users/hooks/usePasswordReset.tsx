@@ -1,4 +1,4 @@
-import { client } from "@api/Api";
+import { client } from "@/api/Api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import type { LoginFormData } from "../types";

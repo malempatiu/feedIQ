@@ -3,7 +3,7 @@ import type { PasswordResetFormData, PasswordResetFormErrors } from "../types";
 import { AuthForm } from "./AuthForm";
 import { validatePasswordResetForm } from "../utils";
 import { usePasswordReset } from "../hooks/usePasswordReset";
-import { ErrorMessage } from "@ui/ErrorMessage";
+import { ErrorMessage } from "@/ui/ErrorMessage";
 import { FormHeader } from "./FormHeader";
 
 const initialFormData: PasswordResetFormData = {

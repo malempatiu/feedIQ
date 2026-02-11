@@ -1,7 +1,7 @@
-import { AuthPage } from "@features/users/AuthPage";
-import { Login } from "@features/users/components/Login";
-import { PasswordReset } from "@features/users/components/PasswordReset";
-import { Register } from "@features/users/components/Register";
+import { AuthPage } from "@/features/users/AuthPage";
+import { Login } from "@/features/users/components/Login";
+import { PasswordReset } from "@/features/users/components/PasswordReset";
+import { Register } from "@/features/users/components/Register";
 import { Navigate, Outlet, Route, Routes } from "react-router";
 
 const AuthLayout = () => {

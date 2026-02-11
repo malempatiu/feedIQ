@@ -1,7 +1,7 @@
-import { Input } from "@ui/Input";
+import { Input } from "@/ui/Input";
 import type { LoginFormData, LoginFormErrors, PasswordResetFormData, PasswordResetFormErrors, RegisterFormData, RegisterFormErrors } from "../types";
-import { Button } from "@ui/Button";
 import { NavLink } from "react-router";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -111,7 +111,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         </div>
       )}
 
-      <Button type='submit' variant='secondary' fullWidth disabled={isAuthenticating}>
+      <Button type='submit' variant='secondary' disabled={isAuthenticating}>
         {isAuthenticating ? (
           <svg className='mr-3 size-5 animate-spin ...' viewBox='0 0 24 24'></svg>
         ) : null}

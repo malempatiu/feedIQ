@@ -1,11 +1,15 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-purple-600: #AD1FEA;
   --color-blue-600: #4661E6;
   --color-sky-300: #62BCFA;
   --color-orange-300: #F49F85;
-  
+
   --color-gray-0: #FFFFFF;
   --color-gray-200: #F7F8FD;
   --color-gray-400: #F2F4FF;
@@ -20,4 +24,134 @@
 
   --color-danger-600: #D73737;
   --color-danger-h: #E98888;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  
+  /* Using your custom colors for shadcn */
+  --background: var(--color-gray-0);
+  --foreground: var(--color-slate-600);
+  --card: var(--color-gray-0);
+  --card-foreground: var(--color-slate-600);
+  --popover: var(--color-gray-0);
+  --popover-foreground: var(--color-slate-600);
+  --primary: var(--color-purple-600);
+  --primary-foreground: var(--color-gray-0);
+  --secondary: var(--color-gray-400);
+  --secondary-foreground: var(--color-slate-600);
+  --muted: var(--color-gray-200);
+  --muted-foreground: var(--color-slate-400);
+  --accent: var(--color-blue-600);
+  --accent-foreground: var(--color-gray-0);
+  --destructive: var(--color-danger-600);
+  --border: var(--color-gray-400);
+  --input: var(--color-gray-400);
+  --ring: var(--color-purple-600);
+  
+  /* Chart colors using your theme */
+  --chart-1: var(--color-purple-600);
+  --chart-2: var(--color-blue-600);
+  --chart-3: var(--color-sky-300);
+  --chart-4: var(--color-orange-300);
+  --chart-5: var(--color-slate-400);
+  
+  /* Sidebar colors */
+  --sidebar: var(--color-gray-0);
+  --sidebar-foreground: var(--color-slate-600);
+  --sidebar-primary: var(--color-purple-600);
+  --sidebar-primary-foreground: var(--color-gray-0);
+  --sidebar-accent: var(--color-gray-200);
+  --sidebar-accent-foreground: var(--color-slate-600);
+  --sidebar-border: var(--color-gray-400);
+  --sidebar-ring: var(--color-purple-600);
+}
+
+.dark {
+  /* Dark mode using your custom colors */
+  --background: var(--color-slate-800);
+  --foreground: var(--color-gray-0);
+  --card: var(--color-slate-600);
+  --card-foreground: var(--color-gray-0);
+  --popover: var(--color-slate-600);
+  --popover-foreground: var(--color-gray-0);
+  --primary: var(--color-purple-h);
+  --primary-foreground: var(--color-gray-0);
+  --secondary: var(--color-slate-600);
+  --secondary-foreground: var(--color-gray-0);
+  --muted: var(--color-slate-600);
+  --muted-foreground: var(--color-slate-h);
+  --accent: var(--color-blue-h);
+  --accent-foreground: var(--color-gray-0);
+  --destructive: var(--color-danger-h);
+  --border: var(--color-slate-600);
+  --input: var(--color-slate-600);
+  --ring: var(--color-purple-h);
+  
+  /* Chart colors for dark mode */
+  --chart-1: var(--color-purple-h);
+  --chart-2: var(--color-blue-h);
+  --chart-3: var(--color-sky-300);
+  --chart-4: var(--color-orange-300);
+  --chart-5: var(--color-slate-h);
+  
+  /* Sidebar colors for dark mode */
+  --sidebar: var(--color-slate-800);
+  --sidebar-foreground: var(--color-gray-0);
+  --sidebar-primary: var(--color-purple-h);
+  --sidebar-primary-foreground: var(--color-gray-0);
+  --sidebar-accent: var(--color-slate-600);
+  --sidebar-accent-foreground: var(--color-gray-0);
+  --sidebar-border: var(--color-slate-600);
+  --sidebar-ring: var(--color-purple-h);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

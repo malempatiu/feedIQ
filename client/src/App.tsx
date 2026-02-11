@@ -7,8 +7,8 @@ import { AppWrapper } from "./ui/AppWrapper";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from "react-router";
 import { lazy, Suspense } from "react";
-import { useCurrentUser } from "@shared/useCurrentUser";
-import { LoadingFallback } from "@ui/LoadingFallback";
+import { useCurrentUser } from "@/shared/useCurrentUser";
+import { LoadingFallback } from "@/ui/LoadingFallback";
 
 
 const queryClient = new QueryClient();

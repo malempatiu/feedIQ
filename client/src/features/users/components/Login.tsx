@@ -4,7 +4,7 @@ import { AuthForm } from "./AuthForm";
 import { validateLoginForm } from "../utils";
 import { NavLink } from "react-router";
 import { useLogin } from "../hooks/useLogin";
-import { ErrorMessage } from "@ui/ErrorMessage";
+import { ErrorMessage } from "@/ui/ErrorMessage";
 import { FormHeader } from "./FormHeader";
 
 const initialFormData: LoginFormData = {

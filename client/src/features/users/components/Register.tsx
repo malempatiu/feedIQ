@@ -4,7 +4,7 @@ import { validateRegisterForm } from "../utils";
 import { AuthForm } from "./AuthForm";
 import { NavLink } from "react-router";
 import { useRegister } from "../hooks/useRegister";
-import { ErrorMessage } from "@ui/ErrorMessage";
+import { ErrorMessage } from "@/ui/ErrorMessage";
 import { FormHeader } from "./FormHeader";
 
 const initialFormData: RegisterFormData = {

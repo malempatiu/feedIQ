@@ -23,13 +23,11 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@ui/*": ["ui/*"],
-      "@features/*": ["features/*"],
-      "@routes/*": ["routes/*"],
-      "@api/*": ["api/*"],
-      "@shared/*": ["shared/*"],
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "include": ["src"]

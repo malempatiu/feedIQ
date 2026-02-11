@@ -1,4 +1,4 @@
-import { client } from "@api/Api";
+import { client } from "@/api/Api";
 import { useQuery } from "@tanstack/react-query";
 import { USER_QUERY_KEY } from "./query-keys";
 
