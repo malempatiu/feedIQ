@@ -1,5 +1,5 @@
-import { Button } from "@ui/Button";
-import { Input } from "@ui/Input";
+import { Button } from "@ui/interactions/Button";
+import { Input } from "@ui/interactions/Input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormHeader } from "./FormHeader";

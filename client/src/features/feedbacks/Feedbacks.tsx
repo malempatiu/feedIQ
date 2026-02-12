@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useFeedbacks } from "./useFeedbacks";
 import toast from "react-hot-toast";
-import { NoFeedback } from "@ui/NoFeedback";
-import { FeedbacksContainer } from "@ui/FeedbacksContainer";
-import { FeedbacksSkeletonLoader } from "@ui/FeedbacksSkeletonLoader";
-import { FeedbackCard } from "@ui/FeedbackCard";
-import { Pagination } from "@ui/Pagination";
+import { NoFeedbacks } from "@features/feedbacks/components/NoFeedbacks";
+import { FeedbacksContainer } from "@features/feedbacks/components/FeedbacksContainer";
+import { FeedbacksSkeletonLoader } from "@features/feedbacks/components/FeedbacksSkeletonLoader";
+import { FeedbackCard } from "@features/feedbacks/components/FeedbackCard";
+import { Pagination } from "@ui/interactions/Pagination";
 
 const Feedbacks = () => {
   const [currentPage, setCurrentPage] = useState (0);
@@ -28,7 +28,7 @@ const Feedbacks = () => {
               return <FeedbackCard key={feedback.id} feedback={feedback} />;
             })
           ) : 
-          (<NoFeedback />)
+          (<NoFeedbacks />)
         }
         <Pagination currentPage={currentPage} totalPages={data.totalPages!} onPageChange={setCurrentPage} />
       </FeedbacksContainer>

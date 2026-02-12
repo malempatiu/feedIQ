@@ -1,9 +1,14 @@
-import { Input } from "@ui/Input";
-import type { LoginFormData, LoginFormErrors, PasswordResetFormData, PasswordResetFormErrors, RegisterFormData, RegisterFormErrors } from "../types";
-import { Button } from "@ui/Button";
+import { Input } from "@ui/interactions/Input";
+import type {
+  LoginFormData,
+  LoginFormErrors,
+  PasswordResetFormData,
+  PasswordResetFormErrors,
+  RegisterFormData,
+  RegisterFormErrors,
+} from "../types";
+import { Button } from "@ui/interactions/Button";
 import { NavLink } from "react-router";
-
-
 
 type AuthFormProps = {
   type: "login" | "register" | "password-reset";
@@ -12,7 +17,7 @@ type AuthFormProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isAuthenticating: boolean;
-}
+};
 
 const AuthForm: React.FC<AuthFormProps> = ({
   type,
@@ -28,32 +33,32 @@ const AuthForm: React.FC<AuthFormProps> = ({
   return (
     <form onSubmit={onSubmit} className='space-y-6'>
       {!isLogin &&
-        !isPasswordReset &&
-        "firstName" in formData &&
-        "lastName" in formData ? (
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <Input
-              id='firstName'
-              label='First Name'
-              type='text'
-              name='firstName'
-              value={formData.firstName}
-              onChange={onChange}
-              placeholder='John'
-              error={"firstName" in errors ? errors.firstName : ""}
-            />
-            <Input
-              id='lastName'
-              label='Last Name'
-              type='text'
-              name='lastName'
-              value={formData.lastName}
-              onChange={onChange}
-              placeholder='Doe'
-              error={"lastName" in errors ? errors.lastName : ""}
-            />
-          </div>
-        ) : null}
+      !isPasswordReset &&
+      "firstName" in formData &&
+      "lastName" in formData ? (
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <Input
+            id='firstName'
+            label='First Name'
+            type='text'
+            name='firstName'
+            value={formData.firstName}
+            onChange={onChange}
+            placeholder='John'
+            error={"firstName" in errors ? errors.firstName : ""}
+          />
+          <Input
+            id='lastName'
+            label='Last Name'
+            type='text'
+            name='lastName'
+            value={formData.lastName}
+            onChange={onChange}
+            placeholder='Doe'
+            error={"lastName" in errors ? errors.lastName : ""}
+          />
+        </div>
+      ) : null}
 
       {"email" in formData ? (
         <Input
@@ -111,11 +116,11 @@ const AuthForm: React.FC<AuthFormProps> = ({
         </div>
       )}
 
-      <Button 
-        type='submit' 
-        variant='secondary' 
-        fullWidth 
-        disabled={isAuthenticating} 
+      <Button
+        type='submit'
+        variant='secondary'
+        fullWidth
+        disabled={isAuthenticating}
         isPending={isAuthenticating}
       >
         {isLogin ? "Sign In" : isPasswordReset ? "Reset Password" : "Create Account"}
@@ -124,4 +129,4 @@ const AuthForm: React.FC<AuthFormProps> = ({
   );
 };
 
-export {AuthForm}
+export { AuthForm };

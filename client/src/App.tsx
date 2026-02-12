@@ -3,7 +3,6 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AppWrapper } from "./ui/AppWrapper";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from "react-router";
 import { lazy, Suspense } from "react";
@@ -18,7 +17,7 @@ const UnAuthenticatedApp = lazy(() => import("./routes/UnAuthenticatedRoutes"));
 
 const AppWithProviders = () => {
   return (
-    <AppWrapper>
+    <div className='min-h-screen bg-gray-200'>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <App />
@@ -45,7 +44,7 @@ const AppWithProviders = () => {
           }}
         />
       </QueryClientProvider>
-    </AppWrapper>
+    </div>
   );
 };
 

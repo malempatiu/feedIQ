@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { FormHeader } from "./FormHeader";
 import { ErrorMessage } from "@ui/ErrorMessage";
-import { Input } from "@ui/Input";
+import { Input } from "@ui/interactions/Input";
 import { NavLink } from "react-router";
-import { Button } from "@ui/Button";
+import { Button } from "@ui/interactions/Button";
 
 const nameSchema = z
   .string({ error: "Require at least 3 characters" })
