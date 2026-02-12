@@ -1,6 +1,6 @@
-import DetectiveLogo from '../assets/Detective.svg';
+import DetectiveLogo from '../../../assets/Detective.svg';
 
-const NoFeedback = () => {
+const NoFeedbacks = () => {
   return (
     <div className='flex flex-col items-center justify-center rounded-lg bg-gray-0 min-h-96 py-28'>
       <div className='flex flex-col gap-10 items-center justify-center'>
@@ -21,4 +21,4 @@ const NoFeedback = () => {
   );
 }
 
-export {NoFeedback}
+export {NoFeedbacks}

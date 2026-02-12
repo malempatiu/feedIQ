@@ -1,14 +1,12 @@
-import React from "react";
-
-interface ErrorMessageProps {
+type ErrorMessageProps = {
   message: string;
   className?: string;
 }
 
-export const ErrorMessage: React.FC<ErrorMessageProps> = ({
+export const ErrorMessage = ({
   message,
   className = "",
-}) => {
+}: ErrorMessageProps) => {
   if (!message) return null;
 
   return (
@@ -17,7 +15,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
       role='alert'
     >
       <div className='flex'>
-        <div className='flex-shrink-0'>
+        <div className='shrink-0'>
           <svg
             className='h-5 w-5 text-red-400'
             viewBox='0 0 20 20'
@@ -32,7 +30,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
           </svg>
         </div>
         <div className='ml-3 flex-1'>
-          <pre className='text-sm text-red-800 font-sans whitespace-pre-wrap break-words'>
+          <pre className='text-sm text-red-800 font-sans whitespace-pre-wrap wrap-break-word'>
             {message}
           </pre>
         </div>

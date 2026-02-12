@@ -1,14 +1,10 @@
-import React from "react";
-
-interface LoadingFallbackProps {
+type LoadingFallbackProps = {
   message?: string;
 }
 
-const LoadingFallback: React.FC<LoadingFallbackProps> = ({
-  message = "Loading FeedIQ...",
-}) => {
+const LoadingFallback = ({ message = "Loading FeedIQ..." }: LoadingFallbackProps) => {
   return (
-    <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4'>
+    <div className='min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4'>
       <div className='text-center'>
         {/* Animated Logo */}
         <div className='flex justify-center mb-6'>
@@ -18,7 +14,7 @@ const LoadingFallback: React.FC<LoadingFallbackProps> = ({
 
             {/* Logo in center */}
             <div className='relative flex items-center justify-center w-20 h-20'>
-              <div className='bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-2 shadow-lg'>
+              <div className='bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl p-2 shadow-lg'>
                 <svg
                   className='w-8 h-8 text-white'
                   fill='none'
@@ -35,7 +31,7 @@ const LoadingFallback: React.FC<LoadingFallbackProps> = ({
               </div>
 
               {/* AI Sparkle */}
-              <div className='absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-1 animate-pulse'>
+              <div className='absolute -top-1 -right-1 bg-linear-to-r from-purple-500 to-pink-500 rounded-full p-1 animate-pulse'>
                 <svg
                   className='w-3 h-3 text-white'
                   fill='currentColor'
@@ -51,7 +47,7 @@ const LoadingFallback: React.FC<LoadingFallbackProps> = ({
         {/* Brand name */}
         <h1 className='text-3xl font-bold text-gray-800 mb-2'>
           Feed
-          <span className='bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'>
+          <span className='bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent'>
             IQ
           </span>
         </h1>

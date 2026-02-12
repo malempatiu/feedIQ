@@ -7,7 +7,6 @@ import { Navigate, Outlet, Route, Routes } from "react-router";
 const AuthLayout = () => {
   return (
     <AuthPage>
-      {/* will either be <Login/> or <SignUp /> */}
       <Outlet />
     </AuthPage>
   );

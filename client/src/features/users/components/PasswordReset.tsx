@@ -1,66 +1,79 @@
-import { useState } from "react";
-import type { PasswordResetFormData, PasswordResetFormErrors } from "../types";
-import { AuthForm } from "./AuthForm";
-import { validatePasswordResetForm } from "../utils";
-import { usePasswordReset } from "../hooks/usePasswordReset";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { ErrorMessage } from "@ui/ErrorMessage";
+import { Input } from "@ui/interactions/Input";
+import { Button } from "@ui/interactions/Button";
+import { usePasswordReset } from "../hooks/usePasswordReset";
 import { FormHeader } from "./FormHeader";
 
-const initialFormData: PasswordResetFormData = {
-  email: "",
-  newPassword: "",
-  repeatedNewPassword: "",
-};
+const passwordSchema = z
+  .string({ error: "Please enter a password" })
+  .min(8, { error: "Password must be at least 8 characters" })
+  .max(13, { error: "Password must not exceed 13 characters" });
+
+const resetSchema = z.object({
+  email: z
+    .email({ error: "Please enter a valid email" })
+    .max(25, { error: "Only 25 characters are allowed" }),
+  password: passwordSchema,
+  confirmPassword: passwordSchema,
+});
+
+type ResetFields = z.infer<typeof resetSchema>;
 
 const PasswordReset = () => {
-  const {resetPassword, isResetting, errorMessage} = usePasswordReset();
-  const [formData, setFormData] = useState<PasswordResetFormData>(initialFormData);
-  const [errors, setErrors] = useState<PasswordResetFormErrors>(initialFormData);
+  const { resetPassword, isResetting, errorMessage } = usePasswordReset();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<ResetFields>({
+    resolver: zodResolver(resetSchema),
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    if (errors[name as keyof PasswordResetFormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const validationErrors = validatePasswordResetForm(formData);
-
-    if (validationErrors.newPassword.length || validationErrors.repeatedNewPassword.length) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    if (formData.newPassword !== formData.repeatedNewPassword) {
-      setErrors({newPassword: 
-        'Passwords do not match', 
-        repeatedNewPassword: 'Passwords do not match',
-        email: ''
+  const onSubmit = (data: ResetFields) => {
+    if (data.password !== data.confirmPassword) {
+      setError("password", { type: "custom", message: "Passwords did not match" });
+      setError("confirmPassword", {
+        type: "custom",
+        message: "Passwords did not match",
       });
       return;
     }
-
-    resetPassword({email: formData.email, password: formData.newPassword})
-    setFormData(initialFormData);
+    resetPassword(data);
   };
 
   return (
     <div>
-      <FormHeader heading="Change your password" text=""/>
-      {errorMessage ? <ErrorMessage message={errorMessage}/> : null}
-      <AuthForm
-        type='password-reset'
-        formData={formData}
-        errors={errors}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        isAuthenticating={isResetting}
-      />
+      <FormHeader heading='Change your password' text='' />
+      {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
+        <Input
+          label='Email'
+          {...register("email")}
+          error={errors.email?.message}
+          placeholder='example@feediq.com'
+        />
+        <Input
+          label='Password'
+          type='password'
+          {...register("password")}
+          error={errors.password?.message}
+          placeholder='••••••••'
+        />
+        <Input
+          label='Re-enter Password'
+          type='password'
+          {...register("confirmPassword")}
+          error={errors.confirmPassword?.message}
+          placeholder='••••••••'
+        />
+        <Button type='submit' variant='secondary' fullWidth isPending={isResetting}>
+          Reset
+        </Button>
+      </form>
     </div>
   );
 };
