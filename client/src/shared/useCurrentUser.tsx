@@ -5,8 +5,8 @@ import { USER_QUERY_KEY } from "./query-keys";
 type User = {
   id: number;
   email: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   role: string;
 }
 
