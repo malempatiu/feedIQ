@@ -1,43 +1,24 @@
-interface InputProps {
-  id: string;
-  label: string;
-  type?: "text" | "email" | "password" | "number";
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
+import { Description, Field, Input as HeadlessInput, Label } from "@headlessui/react";
+import type {InputProps } from "@headlessui/react";
+type Props = InputProps & {
+  label?: string;
   error?: string;
-  disabled?: boolean;
-}
+  description?: string;
+};
 
-const Input: React.FC<Partial<InputProps>> = ({
-  id,
+const Input = ({
   label,
-  type = "text",
-  name,
-  value,
-  onChange,
-  placeholder,
   error,
-  disabled=false
-}) => {
+  description,
+  ...props
+}: Props) => {
   return (
-    <div>
-      <label htmlFor={id} className='block text-sm font-semibold text-slate-600 mb-2'>
-        {label}
-      </label>
-      <input
-        id={id}
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className='w-full px-4 py-3 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition'
-        placeholder={placeholder}
-        disabled={disabled}
-      />
-      {error && <p className='mt-1 text-sm text-red-600'>{error}</p>}
-    </div>
+    <Field className='flex flex-col gap-1.5 mb-3'>
+      {label ? <Label className='block text-sm font-semibold text-slate-600'>{label}</Label> : null}
+      <HeadlessInput className='w-full px-4 py-3 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition'{...props} />
+      {description ? <Description className='block text-sm font-semibold text-slate-400'>{description}</Description> : null}
+      {error && <p className='text-sm text-danger-600'>{error}</p>}
+    </Field>
   );
 };
 

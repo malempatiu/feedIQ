@@ -1,57 +1,64 @@
-import { useState } from "react";
-import type { LoginFormData, LoginFormErrors } from "../types";
-import { AuthForm } from "./AuthForm";
-import { validateLoginForm } from "../utils";
+import { Button } from "@ui/Button";
+import { Input } from "@ui/Input";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormHeader } from "./FormHeader";
+import * as z from "zod";
 import { NavLink } from "react-router";
 import { useLogin } from "../hooks/useLogin";
 import { ErrorMessage } from "@ui/ErrorMessage";
-import { FormHeader } from "./FormHeader";
 
-const initialFormData: LoginFormData = {
-  email: "",
-  password: "",
-};
+const loginSchema = z.object({
+  email: z.email({ error: "Please enter a valid email" }),
+  password: z
+    .string({ error: "Please enter a password" })
+    .min(8, { error: "Password must be at least 8 characters" }),
+});
+
+type LoginFields = z.infer<typeof loginSchema>;
 
 const Login = () => {
-  const {login, isLoggingIn, errorMessage} = useLogin();
-  const [formData, setFormData] = useState<LoginFormData>(initialFormData);
-  const [errors, setErrors] = useState<LoginFormErrors>(initialFormData);
+  const { login, isLoggingIn, errorMessage } = useLogin();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFields>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    if (errors[name as keyof LoginFormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const validationErrors = validateLoginForm(formData);
-
-    if (validationErrors.email || validationErrors.password) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    login(formData);
-    setFormData(initialFormData);
+  const onSubmit = (data: LoginFields) => {
+    login(data);
   };
 
   return (
     <div>
-      <FormHeader heading='Welcome Back' text='Sign in to continue to your account' />
+      <FormHeader heading='Welcome back' text='Sign in to continue to your account' />
       {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
-      <AuthForm
-        type='login'
-        formData={formData}
-        errors={errors}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        isAuthenticating={isLoggingIn}
-      />
+      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
+        <Input
+          label='Email'
+          {...register("email")}
+          error={errors.email?.message}
+          placeholder='example@feediq.com'
+        />
+        <Input
+          label='Password'
+          type='password'
+          {...register("password")}
+          error={errors.password?.message}
+          placeholder='••••••••'
+        />
+        <NavLink
+          to='../password-reset'
+          className='text-sm text-blue-600 hover:text-blue-700 self-end mb-1.5'
+        >
+          Forgot password?
+        </NavLink>
+        <Button type='submit' variant='secondary' fullWidth isPending={isLoggingIn}>
+          Login
+        </Button>
+      </form>
       <div className='mt-6 text-center'>
         <p className='text-gray-600'>
           Don't have an account?{" "}
