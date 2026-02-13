@@ -6,6 +6,8 @@ import { FeedbacksContainer } from "@features/feedbacks/components/FeedbacksCont
 import { FeedbacksSkeletonLoader } from "@features/feedbacks/components/FeedbacksSkeletonLoader";
 import { FeedbackCard } from "@features/feedbacks/components/FeedbackCard";
 import { Pagination } from "@ui/interactions/Pagination";
+import { Button } from "@ui/interactions/Button";
+import { Plus } from "react-feather";
 
 const Feedbacks = () => {
   const [currentPage, setCurrentPage] = useState (0);
@@ -20,7 +22,12 @@ const Feedbacks = () => {
 
   return (
     <div className='flex flex-col gap-3.5 max-w-4xl py-8 mx-auto'>
-      <div className='min-h-20 bg-slate-800 lg:rounded-lg' />
+      <div className='min-h-20 bg-slate-800 lg:rounded-lg flex items-center flex-row-reverse px-2 py-2'>
+        <Button variant='primary'>
+          <Plus size={16} />
+          Add Feedback
+        </Button>
+      </div>
       <FeedbacksContainer>
         { showLoading ? <FeedbacksSkeletonLoader /> : 
           data.feedbacks.length ? (

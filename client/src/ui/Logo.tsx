@@ -1,6 +1,6 @@
 const Logo = () => {
   return (
-    <div className='flex justify-center mb-6'>
+    <div className='flex items-center justify-center'>
       <div className='flex items-center space-x-3'>
         <div className='relative'>
           <div className='bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl p-2.5 shadow-lg'>

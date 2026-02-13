@@ -1,4 +1,4 @@
-import {ChevronUp, MessageCircle} from 'react-feather';
+import {MessageCircle, ThumbsUp} from 'react-feather';
 
 type Feedback = {
   id: number;
@@ -55,7 +55,7 @@ const Voting = ({votes}: {votes: number}) => {
       rounded-lg
     ">
       <div>
-        <ChevronUp color='#4661E6' />
+        <ThumbsUp color='#4661E6' />
       </div>
       <div>
         <span className='text-sm font-bold text-slate-800'>{votes}</span>
