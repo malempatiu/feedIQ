@@ -26,7 +26,7 @@ const useFeedbacks = (page: number = 0, limit:number=5) => {
     queryFn: () => client.get<FeedbacksData>(`feeds?page=${page}&limit=${limit}`),
   })
 
-  const feedbacks = data?.data?.feedbacks?.map((feedback) => ({...feedback, votes: 10, commentsCount: 5, category: 'Enhancement'})) ?? [];
+  const feedbacks = data?.data?.feedbacks?.map((feedback) => ({...feedback, votes: 10, commentsCount: 5, category: feedback.category ?? 'Suggestion'})) ?? [];
 
   return {
     data:  data ? {...data.data, feedbacks} : {limit, currentPage: page, totalPages: 0, feedbacks},
