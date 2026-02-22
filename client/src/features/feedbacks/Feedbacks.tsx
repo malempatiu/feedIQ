@@ -37,7 +37,7 @@ const Feedbacks = () => {
           ) : 
           (<NoFeedbacks />)
         }
-        <Pagination currentPage={currentPage} totalPages={data.totalPages!} onPageChange={setCurrentPage} />
+        {data.totalPages && data.totalPages > 1 ? <Pagination currentPage={currentPage} totalPages={data.totalPages!} onPageChange={setCurrentPage} /> : null}
       </FeedbacksContainer>
     </div>
   ); 
