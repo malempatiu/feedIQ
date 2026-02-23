@@ -10,17 +10,25 @@ import { Pagination } from "@ui/interactions/Pagination";
 import { Button } from "@ui/interactions/Button";
 import { Plus } from "react-feather";
 import Typography from "@ui/Typography";
+import { useSearchParams } from "react-router";
 
 const Feedbacks = () => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get("page") ?? 0);
+  const limit = Number(searchParams.get("limit") ?? 5);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data, showLoading, errorMessage } = useFeedbacks(currentPage);
+  const { data, showLoading, errorMessage } = useFeedbacks(currentPage, limit);
 
   useEffect(() => {
     if (errorMessage) {
       toast.error(errorMessage);
     }
   }, [errorMessage]);
+
+   const goToPage = (page: number) => {
+     setSearchParams({ page: String(page), limit: String(limit) });
+   };
 
   return (
     <div className='flex flex-col gap-3.5 min-w-[80%] max-w-[85%] py-8 mx-auto'>
@@ -45,7 +53,7 @@ const Feedbacks = () => {
           <Pagination
             currentPage={currentPage}
             totalPages={data.totalPages!}
-            onPageChange={setCurrentPage}
+            onPageChange={goToPage}
           />
         ) : null}
       </FeedbacksContainer>

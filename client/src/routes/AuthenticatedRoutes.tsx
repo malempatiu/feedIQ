@@ -5,7 +5,7 @@ import { Header } from "@ui/Header";
 import { Button } from "@ui/interactions/Button";
 import { UserAvatar } from "@ui/UserAvatar";
 import { LogOut } from "react-feather";
-import { Navigate, Outlet, Route, Routes } from "react-router";
+import { Navigate, Outlet, Route, Routes, useSearchParams } from "react-router";
 
 const AuthenticatedLayout = () => {
   const { logout } = useLogout();
@@ -31,11 +31,30 @@ const AuthenticatedLayout = () => {
   );
 };
 
+const FeedbacksRedirect = () => {
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page");
+  const limit = searchParams.get("limit");
+
+  if (!page || !limit) {
+    const newParams = new URLSearchParams({
+      page: page ?? "0",
+      limit: limit ?? "5",
+    });
+    return <Navigate to={`/feedbacks?${newParams.toString()}`} replace />;
+  }
+
+  return <Feedbacks />;
+};
+
 const AuthenticatedRoutes = () => {
   return (
     <Routes>
       <Route element={<AuthenticatedLayout />}>
-        <Route path='feedbacks' element={<Feedbacks />} />
+        <Route
+          path='feedbacks'
+          element={<FeedbacksRedirect />}
+        />
         <Route path='feedbacks/:id' element={<div>Detail</div>} />
       </Route>
       <Route path='*' element={<Navigate to='/feedbacks' replace />} />
