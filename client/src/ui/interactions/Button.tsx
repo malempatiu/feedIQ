@@ -16,7 +16,7 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const baseClasses =
-    "flex flex-row gap-2 items-center justify-center py-3 px-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition cursor-pointer";
+    "flex flex-row gap-1 items-center justify-center py-3 px-3 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition cursor-pointer";
 
   const variantClasses: Record<string, string> = {
     primary: "bg-purple-600 text-white hover:bg-purple-h",

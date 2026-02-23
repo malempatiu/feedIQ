@@ -2,8 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .interfaces import IFeedsRepository
 from .dtos import FeedbackCreateDTO, FeedbackUpdateDTO
 from .model import Feedback
-from sqlmodel import select, func
-from sqlalchemy.orm import joinedload
+from sqlmodel import select, func, col
 from fastapi import HTTPException, status
 
 class FeedsRepository(IFeedsRepository):
@@ -35,7 +34,7 @@ class FeedsRepository(IFeedsRepository):
 
 
     async def get_all(self, offset:int, limit: int):
-        statement = select(Feedback).offset(offset).limit(limit)
+        statement = select(Feedback).offset(offset).limit(limit).order_by(col(Feedback.createdAt).desc())
         result = await self.db.execute(statement)
         feedbacks = result.scalars().all()
         return feedbacks

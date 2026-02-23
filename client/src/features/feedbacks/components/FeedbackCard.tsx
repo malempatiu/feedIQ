@@ -1,4 +1,5 @@
-import {ChevronUp, MessageCircle} from 'react-feather';
+import {MessageCircle, ThumbsUp} from 'react-feather';
+import { FeedbackCategory } from './FeedbackCategory';
 
 type Feedback = {
   id: number;
@@ -14,7 +15,7 @@ const FeedbackCard = ({feedback}: {feedback: Feedback}) => {
     <div className='rounded-lg bg-gray-0 px-8 py-7'>
       <div className='md:hidden flex flex-col gap-4'>
         <ContentWrapper>
-          <Category category={feedback.category} />
+          <FeedbackCategory category={feedback.category} id={feedback.id} />
           <Content title={feedback.title} detail={feedback.detail} />
         </ContentWrapper>
         <div className='flex flex-row justify-between items-center'>
@@ -25,7 +26,7 @@ const FeedbackCard = ({feedback}: {feedback: Feedback}) => {
       <div className='hidden md:flex flex-row gap-8'>
         <Voting votes={feedback.votes} />
         <ContentWrapper>
-          <Category category={feedback.category} />
+          <FeedbackCategory category={feedback.category} id={feedback.id} />
           <Content title={feedback.title} detail={feedback.detail} />
         </ContentWrapper>
         <CommentsCount count={feedback.commentsCount} />
@@ -55,21 +56,13 @@ const Voting = ({votes}: {votes: number}) => {
       rounded-lg
     ">
       <div>
-        <ChevronUp color='#4661E6' />
+        <ThumbsUp color='#4661E6' />
       </div>
       <div>
         <span className='text-sm font-bold text-slate-800'>{votes}</span>
       </div>
     </div>
   )
-}
-
-const Category = ({category}: {category: string}) => {
-  return (
-    <div className='flex flex-row justify-center items-center rounded-lg bg-gray-400 px-4 py-1.5 w-fit'>
-      <span className='text-sm text-blue-600 font-semibold'>{category}</span>
-    </div>
-  );
 }
 
 const ContentWrapper = ({children}: {children: React.ReactNode}) => {
