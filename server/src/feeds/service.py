@@ -26,7 +26,8 @@ class FeedsService:
             currentPage=page, 
             limit=limit, 
             feedbacks=[FeedbackResponseDTO.model_validate(feedback) for feedback in feedbacks], 
-            totalPages=math.ceil(total_count / limit) if limit > 0 else 0
+            totalPages=math.ceil(total_count / limit) if limit > 0 else 0,
+            totalFeedbacks=total_count
         )
         return dto
     

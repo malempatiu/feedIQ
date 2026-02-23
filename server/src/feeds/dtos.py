@@ -45,6 +45,7 @@ class FeedbacksResponseDTO(BaseModel):
     currentPage: int
     limit: int
     totalPages: int
+    totalFeedbacks: int
     feedbacks: list[FeedbackResponseDTO]
 
 

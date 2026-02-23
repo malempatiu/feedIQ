@@ -17,6 +17,7 @@ type FeedbacksData = {
   currentPage: number;
   limit: number;
   totalPages: number;
+  totalFeedbacks: number;
   feedbacks: Feedback[]
 }
 
@@ -29,7 +30,7 @@ const useFeedbacks = (page: number = 0, limit:number=5) => {
   const feedbacks = data?.data?.feedbacks?.map((feedback) => ({...feedback, votes: 10, commentsCount: 5, category: feedback.category ?? 'Suggestion'})) ?? [];
 
   return {
-    data:  data ? {...data.data, feedbacks} : {limit, currentPage: page, totalPages: 0, feedbacks},
+    data:  data ? {...data.data, feedbacks} : {limit, currentPage: page, totalPages: 0, feedbacks, totalFeedbacks: 0},
     showLoading: isPending,
     errorMessage: error?.message
   }

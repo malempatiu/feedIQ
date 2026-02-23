@@ -9,6 +9,7 @@ import { AddFeedbackModal } from "@features/feedbacks/components/AddFeedbackModa
 import { Pagination } from "@ui/interactions/Pagination";
 import { Button } from "@ui/interactions/Button";
 import { Plus } from "react-feather";
+import Typography from "@ui/Typography";
 
 const Feedbacks = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,7 +24,8 @@ const Feedbacks = () => {
 
   return (
     <div className='flex flex-col gap-3.5 min-w-[80%] max-w-[85%] py-8 mx-auto'>
-      <div className='min-h-20 bg-slate-800 flex rounded-lg items-center flex-row-reverse px-2 py-2'>
+      <div className='min-h-20 bg-slate-800 flex rounded-lg items-center justify-between px-4 py-2'>
+        <Typography variant="h3" className="text-gray-0">{`${data.totalFeedbacks} Suggestions`}</Typography>
         <Button variant='primary' onClick={() => setIsModalOpen(true)}>
           <Plus size={16} />
           Add Feedback
