@@ -7,10 +7,11 @@ import { Textarea } from "@ui/interactions/Textarea";
 import { Button } from "@ui/interactions/Button";
 import { useCreateFeedback } from "../useCreateFeedback";
 import { X } from "react-feather";
+import Typography from "@ui/Typography";
 
 const feedbackSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters"),
-  detail: z.string().min(20, "Description must be at least 20 characters"),
+  detail: z.string().min(20, "Detail must be at least 20 characters"),
 });
 
 type FeedbackFormData = z.infer<typeof feedbackSchema>;
@@ -78,7 +79,7 @@ const AddFeedbackModal = ({ isOpen, onClose }: AddFeedbackModalProps) => {
               {...register("detail")}
             />
 
-            {errorMessage && <p className='text-sm text-red-600'>{errorMessage}</p>}
+            {errorMessage && <Typography variant='body2' className='text-red-600'>{errorMessage}</Typography>}
 
             <div className='flex justify-end gap-3 pt-4'>
               <Button
