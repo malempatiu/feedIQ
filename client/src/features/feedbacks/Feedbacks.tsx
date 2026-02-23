@@ -57,7 +57,7 @@ const Feedbacks = () => {
           />
         ) : null}
       </FeedbacksContainer>
-      <AddFeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <AddFeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} goToPage={goToPage}/>
     </div>
   );
 };

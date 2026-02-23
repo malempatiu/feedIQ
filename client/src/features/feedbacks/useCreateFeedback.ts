@@ -21,13 +21,14 @@ type Response = {
   updatedAt: string | null;
 };
 
-export const useCreateFeedback = () => {
+export const useCreateFeedback = (options?: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
   const { mutate: createFeedback, isPending, error } = useMutation({
     mutationFn: (feedbackData: CreateFeedbackData) => client.post<Response>('feeds/', feedbackData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feeds'] });
       toast.success('Feedback added successfully!');
+      options?.onSuccess?.()
     }
   });
 

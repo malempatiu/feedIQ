@@ -19,11 +19,10 @@ type FeedbackFormData = z.infer<typeof feedbackSchema>;
 type AddFeedbackModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  goToPage: (page: number) => void;
 };
 
-const AddFeedbackModal = ({ isOpen, onClose }: AddFeedbackModalProps) => {
-  const { createFeedback, isCreating, errorMessage } = useCreateFeedback();
-
+const AddFeedbackModal = ({ isOpen, onClose, goToPage }: AddFeedbackModalProps) => {
   const {
     register,
     handleSubmit,
@@ -32,14 +31,14 @@ const AddFeedbackModal = ({ isOpen, onClose }: AddFeedbackModalProps) => {
   } = useForm<FeedbackFormData>({
     resolver: zodResolver(feedbackSchema),
   });
-
-  const onSubmit = (data: FeedbackFormData) => {
-    createFeedback(data, {
-      onSuccess: () => {
+  const { createFeedback, isCreating, errorMessage } = useCreateFeedback({onSuccess: () => {
         reset();
         onClose();
-      },
-    });
+        goToPage(0);
+      }});
+
+  const onSubmit = (data: FeedbackFormData) => {
+    createFeedback(data);
   };
 
   const handleClose = () => {
