@@ -22,7 +22,9 @@ services:
   server:
     build: .
     volumes:
-      - .:/app
+      - ./src:/app/src           
+      - ./migrations:/app/migrations
+      - ./alembic.ini:/app/alembic.ini
     ports:
       - "8000:8000"
     environment:

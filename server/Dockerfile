@@ -10,6 +10,13 @@ COPY ./src /app/src
 COPY ./migrations /app/migrations
 COPY ./alembic.ini /app/alembic.ini
 
+# add entrypoint script which will apply migrations on startup
+COPY ./entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 EXPOSE 8000
 
-CMD ["fastapi", "run", "src/main.py", "--port", "8000", "--reload"]
+# Run the entrypoint via the shell so a bind-mounted script that
+# doesn't have the executable bit can still be executed by the shell.
+# This is useful in development when the host copy may not be +x.
+ENTRYPOINT ["sh", "/app/entrypoint.sh"]
