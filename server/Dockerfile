@@ -1,14 +1,14 @@
 FROM python:3.14-slim
 
-WORKDIR /code
+WORKDIR /app
 
-COPY ./requirements.txt /code/requirements.txt
+COPY ./requirements.txt /app/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-COPY ./src /code/src
-COPY ./migrations /code/migrations
-COPY ./alembic.ini /code/alembic.ini
+COPY ./src /app/src
+COPY ./migrations /app/migrations
+COPY ./alembic.ini /app/alembic.ini
 
 EXPOSE 8000
 
