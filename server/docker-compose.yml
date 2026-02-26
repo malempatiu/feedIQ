@@ -22,7 +22,7 @@ services:
   server:
     build: .
     volumes:
-      - .:/code
+      - .:/app
     ports:
       - "8000:8000"
     environment:
@@ -46,6 +46,19 @@ services:
     command: 'inngest dev -u http://server:8000/api/inngest'
     ports:
       - '8288:8288'
+    networks:
+      - app-network
+  
+  client:
+    build:
+      context: ../client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../client:/app
+      - /app/node_modules
+    depends_on:
+      - server
     networks:
       - app-network
 
