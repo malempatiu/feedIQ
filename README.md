@@ -2,6 +2,7 @@
 
 feedIQ is a full-stack AI-powered product feedback platform. Users can submit feedback about an application, and the system automatically categorises it using a self-correcting LangGraph pipeline powered by OpenAI — all processed asynchronously in the background via Inngest.
 
+                                           🚧 Work in progress 🚧 
 ---
 
 ## 🗂 Repository Structure
@@ -258,3 +259,4 @@ pytest
 - [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
+
