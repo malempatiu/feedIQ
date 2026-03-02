@@ -87,7 +87,7 @@ flowchart TD
 
 The pipeline runs asynchronously — the API enqueues an Inngest event on feedback submission and returns immediately. The client polls for the category update and stops once it arrives.
 
-> See [Server Architecture](server/ARCHITECTURE.md) for the full system diagram and component breakdown.
+> See [Server Architecture](server/README.md) for the full system diagram and component breakdown.
 
 ---
 
