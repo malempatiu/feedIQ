@@ -19,7 +19,6 @@ const useCategory = (id: number, enabled: boolean) => {
     queryFn: () => client.get<Feedback>(`feeds/${id}`),
     enabled,
     refetchInterval: (query) => {
-      console.log(query)
       const hasPending = !query.state.data?.data?.category;
       return hasPending ? 3000 : false;
     },

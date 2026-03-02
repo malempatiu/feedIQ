@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Input } from "@ui/interactions/Input";
 import { Textarea } from "@ui/interactions/Textarea";
 import { Button } from "@ui/interactions/Button";
-import { useCreateFeedback } from "../useCreateFeedback";
+import { useCreateFeedback } from "../hooks/useCreateFeedback";
 import { X } from "react-feather";
 import Typography from "@ui/Typography";
 
