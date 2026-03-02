@@ -4,6 +4,18 @@ feedIQ is a full-stack AI-powered product feedback platform. Users can submit fe
 
                                            🚧 Work in progress 🚧 
 ---
+## Demo
+
+Demo of automatic categorization of user submitted feedback
+
+
+
+https://github.com/user-attachments/assets/bb90f696-a7b5-41d8-bf06-0c1918cf1cf2
+
+
+
+
+---
 
 ## 🗂 Repository Structure
 
