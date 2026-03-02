@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useFeedbacks } from "./useFeedbacks";
+import { useFeedbacks } from "./hooks/useFeedbacks";
 import toast from "react-hot-toast";
 import { NoFeedbacks } from "@features/feedbacks/components/NoFeedbacks";
 import { FeedbacksContainer } from "@features/feedbacks/components/FeedbacksContainer";

@@ -7,29 +7,39 @@ from pydantic import BaseModel, Field
 from src.config import get_settings
 from typing import TypedDict
 
+
 settings = get_settings()
 
 model: ChatOpenAI | None = None
+
+FALLBACK_CATEGORY = 'Uncategorized'
+
 
 def get_model():
     global model
     if not settings.OPENAI_API_KEY:
         raise ValueError('OPENAI_API_KEY key is missing')
 
-    if model is not None: 
+    if model is not None:
         return model
-    
+
     # do stuff here
     model = ChatOpenAI(model="gpt-4o-mini", api_key=settings.OPENAI_API_KEY)
     return model
 
+
 class GeneratorState(BaseModel):
-    category: str = Field(description='LLM generated category for user given feedback')
-    reason: str = Field(description='LLM generated reason why category belong to the user given feedback')
+    category: str = Field(
+        description='LLM generated category for user given feedback')
+    reason: str = Field(
+        description='LLM generated reason why category belong to the user given feedback')
+
 
 class EvaluationState(BaseModel):
-    feedback: str = Field(description='Actionable feedback explains why LLM generated category is not related to user given feedback')
-    is_categorized_correctly: bool = Field(description='A flag to represent whether LLM generated category is correct or not')
+    feedback: str = Field(
+        description='Actionable feedback explains why LLM generated category is not related to user given feedback')
+    is_categorized_correctly: bool = Field(
+        description='A flag to represent whether LLM generated category is correct or not')
 
 
 class State(TypedDict):
@@ -39,11 +49,13 @@ class State(TypedDict):
     generation: GeneratorState
     evaluation: EvaluationState
 
+
 allowed_categories_prompt = """
     Allowed Categories: 
     You must choose one and only one of the following values:
     UI, UX, Bug, Feature, Enhancement, Performance, Documentation, Other.
 """
+
 
 async def category_generator(state: State):
     messages = [SystemMessage(content=f"""You are an AI assistant that categorizes user feedback for a SaaS application.
@@ -59,12 +71,14 @@ async def category_generator(state: State):
      - Do not suggest solutions or opinions.
      - Always return valid JSON.
     """),
-    HumanMessage(content=f"Categorize the feedback: feedback_title: {state['title']}, feedback_detail: {state['detail']}")
+        HumanMessage(
+            content=f"Categorize the feedback: feedback_title: {state['title']}, feedback_detail: {state['detail']}")
     ]
-    
+
     llm_structured = get_model().with_structured_output(GeneratorState)
     response = await llm_structured.ainvoke(messages)
     return {'generation': response}
+
 
 async def category_evaluator(state: State):
     messages = [SystemMessage(content=f"""You are an AI assistant responsible for evaluating the correctness of feedback categorization for a SaaS application.
@@ -101,7 +115,7 @@ async def category_evaluator(state: State):
 
     You must strictly follow this output format for every response.                        
     """),
-    HumanMessage(
+        HumanMessage(
         content=f"Evaluate the category: user_feedback_title: {state['title']}, user_feedback_detail: {state['detail']}, proposed_category: {state['generation'].category}, proposed_reason: {state['generation'].reason}"
     )
     ]
@@ -139,7 +153,7 @@ async def category_fixer(state: State):
     
     You must strictly follow these instructions for every response.
     """),
-    HumanMessage(
+        HumanMessage(
         content=f"Categorize the feedback: feedback_title: {state['title']}, feedback_detail: {state['detail']}, evaluator_feedback: {state['evaluation'].feedback}"
     )
     ]
@@ -147,6 +161,7 @@ async def category_fixer(state: State):
     llm_structured = get_model().with_structured_output(GeneratorState)
     response = await llm_structured.ainvoke(messages)
     return {'generation': response}
+
 
 async def route_category(state: State):
     evaluation = state.get('evaluation', None)
@@ -165,14 +180,16 @@ async def generate_category_dispatch(state: State) -> dict:
 feedback_categorize_builder = StateGraph(State)
 
 # nodes
-feedback_categorize_builder.add_node('category_generator', generate_category_dispatch)
+feedback_categorize_builder.add_node(
+    'category_generator', generate_category_dispatch)
 feedback_categorize_builder.add_node('category_evaluator', category_evaluator)
 
-#edges
+# edges
 feedback_categorize_builder.add_edge(START, 'category_generator')
-feedback_categorize_builder.add_edge('category_generator', 'category_evaluator')
+feedback_categorize_builder.add_edge(
+    'category_generator', 'category_evaluator')
 feedback_categorize_builder.add_conditional_edges(
-    'category_evaluator', 
+    'category_evaluator',
     route_category,
     {
         "Accepted": END,
@@ -180,12 +197,18 @@ feedback_categorize_builder.add_conditional_edges(
     }
 )
 
+
 async def categorize_feedback(title: str, detail: str):
-    optimizer_workflow = feedback_categorize_builder.compile()
-    #optimizer_workflow.get_graph().draw_mermaid())
-    response = await optimizer_workflow.ainvoke(Command(update={'title': title, 'detail': detail}))
-    return response['generation'].category
-    
-    
+    try:
+        optimizer_workflow = feedback_categorize_builder.compile()
+        # optimizer_workflow.get_graph().draw_mermaid())
+        response = await optimizer_workflow.ainvoke(Command(update={'title': title, 'detail': detail}))
+        return response['generation'].category
+    except Exception as exc:
+        # TODO: Handle Logging Properly
+        print("********* Failed to categorize feedback ******")
+        return FALLBACK_CATEGORY
+
+
 if __name__ == '__main__':
-    asyncio.run(categorize_feedback('',''))
+    asyncio.run(categorize_feedback('', ''))
