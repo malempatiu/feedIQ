@@ -1,6 +1,7 @@
 import asyncio
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command
 from pydantic import BaseModel, Field
@@ -10,22 +11,31 @@ from typing import TypedDict
 
 settings = get_settings()
 
-model: ChatOpenAI | None = None
+gpt_model: ChatOpenAI | None = None
+claude_model: ChatAnthropic | None = None
 
 FALLBACK_CATEGORY = 'Uncategorized'
 
 
 def get_model():
-    global model
+    global gpt_model, claude_model
     if not settings.OPENAI_API_KEY:
         raise ValueError('OPENAI_API_KEY key is missing')
+    elif not settings.ANTHROPIC_API_KEY:
+        raise ValueError('ANTHROPIC_API_KEY key is missing')
 
-    if model is not None:
-        return model
+    if gpt_model is not None and claude_model is not None:
+        return {
+            "gpt": gpt_model,
+            "claude": claude_model
+        }
 
-    # do stuff here
-    model = ChatOpenAI(model="gpt-4o-mini", api_key=settings.OPENAI_API_KEY)
-    return model
+    gpt_model = ChatOpenAI(model="gpt-4o-mini", api_key=settings.OPENAI_API_KEY)
+    claude_model = ChatAnthropic(model="claude-sonnet-4-6", api_key=settings.ANTHROPIC_API_KEY) # type: ignore
+    return {
+        "gpt": gpt_model,
+        "claude": claude_model
+    }
 
 
 class GeneratorState(BaseModel):
@@ -75,7 +85,7 @@ async def category_generator(state: State):
             content=f"Categorize the feedback: feedback_title: {state['title']}, feedback_detail: {state['detail']}")
     ]
 
-    llm_structured = get_model().with_structured_output(GeneratorState)
+    llm_structured = get_model()["gpt"].with_structured_output(GeneratorState)
     response = await llm_structured.ainvoke(messages)
     return {'generation': response}
 
@@ -120,7 +130,7 @@ async def category_evaluator(state: State):
     )
     ]
 
-    llm_structured = get_model().with_structured_output(EvaluationState)
+    llm_structured = get_model()["claude"].with_structured_output(EvaluationState)
     response = await llm_structured.ainvoke(messages)
     return {'evaluation': response, "num_reviews": state.get('num_reviews', 0) + 1}
 
@@ -158,7 +168,7 @@ async def category_fixer(state: State):
     )
     ]
 
-    llm_structured = get_model().with_structured_output(GeneratorState)
+    llm_structured = get_model()["gpt"].with_structured_output(GeneratorState)
     response = await llm_structured.ainvoke(messages)
     return {'generation': response}
 
