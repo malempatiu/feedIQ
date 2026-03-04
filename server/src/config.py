@@ -36,6 +36,7 @@ class Settings(BaseSettings):
         default="HS256", validation_alias="JWT_ALGORITHM", alias_priority=2)
     
     OPENAI_API_KEY: SecretStr | None = None
+    ANTHROPIC_API_KEY: SecretStr | None = None
 
     class Config:
         env_file = ".env"
