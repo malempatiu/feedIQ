@@ -2,7 +2,24 @@
 
 feedIQ is a full-stack AI-powered product feedback platform. Users can submit feedback about an application, and the system automatically categorises it using a self-correcting LangGraph pipeline powered by OpenAI — all processed asynchronously in the background via Inngest.
 
-                                           🚧 Work in progress 🚧 
+---
+
+## 🗺 Roadmap
+
+| Feature | Status |
+|---|---|
+| User authentication | ✅ Done |
+| Feedback submission and listing | ✅ Done |
+| AI categorisation pipeline | ✅ Done |
+| Kafka microservice + Jira integration | 🚧 In progress |
+| AI feedback sentiment and prioirty pipeline | 🚧 Planned |
+| Duplicate feedback detection | 🚧 Planned |
+| Sorting Feedbacks with AI  | 🚧 Planned |
+| Comments on feedback | 🚧 Planned |
+| AI summarization of comments | 🚧 Planned |
+| Filter feedbacks by category | 🚧 Planned |
+| Edit and delete feedbacks | 🚧 Planned |
+
 ---
 ## Demo
 
