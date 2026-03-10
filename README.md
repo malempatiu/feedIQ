@@ -1,6 +1,6 @@
 # feedIQ
 
-feedIQ is a full-stack AI-powered product feedback platform. Users can submit feedback about an application, and the system automatically categorises it using a self-correcting LangGraph pipeline powered by OpenAI — all processed asynchronously in the background via Inngest.
+feedIQ is a full-stack AI-powered product feedback platform. Users can submit feedback about an application, and the system automatically categorises it using a self-correcting multi-model LangGraph pipeline powered by GPT-4o-mini and Claude Sonnet 4.6, all processed asynchronously in the background via Inngest. The platform follows a microservice architecture where a dedicated Node.js TypeScript Kafka consumer service is planned to automatically create Jira tickets from categorised feedback, decoupling the core AI platform from downstream integrations.
 
 ---
 
@@ -19,6 +19,15 @@ feedIQ is a full-stack AI-powered product feedback platform. Users can submit fe
 | AI summarization of comments | 🚧 Planned |
 | Filter feedbacks by category | 🚧 Planned |
 | Edit and delete feedbacks | 🚧 Planned |
+
+
+## 🔗 Jira Service — Coming Soon
+
+The `jira-service` is a planned Node.js TypeScript microservice 
+that will consume `feedback.submitted` Kafka events and 
+automatically create Jira tickets via the Atlassian REST API.
+
+**Planned stack:** Node.js · TypeScript · kafka · Atlassian REST API · Docker
 
 ---
 ## Demo
