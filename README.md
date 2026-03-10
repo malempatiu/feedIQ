@@ -146,6 +146,7 @@ flowchart LR
     subgraph HTTP
         A[Client App]
     end
+
     subgraph API
         B[FastAPI Server]
         subgraph Routers
@@ -169,27 +170,41 @@ flowchart LR
         R1 --> C
         R2 --> C
     end
+
     subgraph Data
-        C[(PostgreSQL DB)]
+        C[(PostgreSQL)]
     end
+
     subgraph Background
         D[Inngest Worker]
-        subgraph Workflows
-            D1[Categorize Feedback Workflow]
-            D2[Other Workflows]
+        subgraph LangGraph Pipeline
+            G[category_generator]
+            E[category_evaluator]
+            F[category_fixer]
+            G --> E
+            E -->|Rejected| F
+            F --> E
         end
-        D --> D1
-        D --> D2
-        D1 --> F[LangChain/LangGraph]
-        D1 --> S1
+        D --> G
+        D -->|save category result| S1
     end
+
+    subgraph Planned
+        K[Kafka]
+        J[jira-service]
+        JR[Jira]
+        K --> J --> JR
+    end
+
     A -->|REST requests| B
+    A -.->|polls for category| B
     B -->|enqueue event| D
+    S1 -.->|publish event - planned| K
 
     classDef storage fill:#f9f,stroke:#333,stroke-width:1px;
     class C storage
-    classDef external fill:#ccf,stroke:#333,stroke-width:1px;
-    class F external
+    classDef planned fill:#fff3cd,stroke:#f59e0b,stroke-width:1.5px;
+    class K,J,JR planned
 ```
 
 ---
