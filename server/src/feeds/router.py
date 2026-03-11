@@ -27,6 +27,8 @@ async def create_feedback(
                 }
             )
         )
+    else:
+        await feeds_service.publish_feedback_created(id=result.id, dto=create_dto)
     return result
 
 @feeds_router.get('/', status_code=status.HTTP_200_OK, response_model=FeedbacksResponseDTO)

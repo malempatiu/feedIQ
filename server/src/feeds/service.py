@@ -3,7 +3,7 @@ from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO, 
 from fastapi import HTTPException, status
 import math
 from src.workflows.categorize_feedback import categorize_feedback
-
+from src.message_broker.publish_feedback_created import PublishFeedbackCreated, FeedbackCreatedDTO
 
 class FeedsService:
     def __init__(self, repo: IFeedsRepository):
@@ -47,9 +47,28 @@ class FeedsService:
         result = await self.feeds_Repo.update(id, dto)
         return result
     
+    async def publish_feedback_created(self, id: int | None, dto: FeedbackCreateDTO):
+        if not id:
+            raise ValueError('Feedback id is missing for publish_feedback_created!')
+        
+        if not dto.category:
+            raise ValueError(
+                'Feedback category is missing for publish_feedback_created!')
+        
+        await PublishFeedbackCreated.publish(
+            dto=FeedbackCreatedDTO(
+                id=id, 
+                title=dto.title, 
+                detail=dto.detail, 
+                category=dto.category
+            )
+        )
 
     async def categorize_feedback(self, id: int, dto: FeedbackCreateDTO):
         if not dto.category:
             category = await categorize_feedback(title=dto.title, detail=dto.detail)
             await self.update_feedback(id, FeedbackUpdateDTO(category=category))
+            await PublishFeedbackCreated.publish(
+                dto=FeedbackCreatedDTO(id=id, title=dto.title, detail=dto.detail, category=category)
+            )
 

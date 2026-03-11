@@ -71,7 +71,6 @@ class KafkaProducer:
         self,
         topic: str,
         value: Any,
-        key: str | None = None,
     ) -> None:
         if not self._producer:
             logger.info("Producer not initialized, starting now...")
@@ -86,23 +85,21 @@ class KafkaProducer:
                 f"Cannot serialize message value to JSON: {e}"
             ) from e
 
-        encoded_key = key.encode("utf-8") if key else None
-
         try:
             delivery_future = await self._producer.produce(
-                topic, value=payload, key=encoded_key
+                topic, value=payload, 
             )
             msg = await delivery_future
         except KafkaException as e:
-            logger.error(f"Delivery failed — topic='{topic}' key='{key}': {e}")
+            logger.error(f"Delivery failed — topic='{topic}': {e}")
             raise DeliveryError(
                 f"Failed to deliver message to topic '{topic}': {e}"
             ) from e
 
-        logger.debug(
+        logger.info(
             f"Delivered → topic={msg.topic()} "
             f"partition={msg.partition()} offset={msg.offset()}"
         )
 
 
-kafka_producer = KafkaProducer()
+producer = KafkaProducer()
