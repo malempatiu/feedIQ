@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 interface Config {
-  port: number;
   nodeEnv: string;
   kafka: {
     clientId: string;
@@ -19,7 +18,6 @@ interface Config {
 }
 
 const config: Config = {
-  port: Number(process.env.PORT) ?? 3000,
   nodeEnv: process.env.NODE_ENV ?? 'development',
   kafka: {
     // A label that names a particular producer or consumer
