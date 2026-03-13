@@ -7,7 +7,7 @@ from src.background_tasks.client import inngest_client
 from src.background_tasks.tasks.categorize_feedback_bg import categorize_feedback_background
 import logging
 from contextlib import asynccontextmanager
-from src.message_broker.producer import producer
+from src.message_broker.kafka.producer import kafka_producer
 
 logging.basicConfig(
     level=logging.INFO,
@@ -25,12 +25,12 @@ version = 'v1'
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Starting Kafka producer…")
-    await producer.start()
+    await kafka_producer.start()
 
     yield
 
     logger.info("Stopping Kafka producer…")
-    await producer.stop()
+    await kafka_producer.stop()
 
 app = FastAPI(
     title='feedIQ server',

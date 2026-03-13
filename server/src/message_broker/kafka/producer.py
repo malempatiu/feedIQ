@@ -1,6 +1,5 @@
-import json
 import logging
-from typing import Any
+from pydantic import BaseModel
 
 from confluent_kafka.aio import AIOProducer
 from confluent_kafka import KafkaException
@@ -67,19 +66,19 @@ class KafkaProducer:
             await self._producer.close()
             logger.info("AIOProducer closed")
 
-    async def produce(
+    async def send(
         self,
         topic: str,
-        value: Any,
+        message: BaseModel,
     ) -> None:
         if not self._producer:
             logger.info("Producer not initialized, starting now...")
             await self.start()
-        
+
         assert self._producer is not None, "Producer should be initialized at this point"
 
         try:
-            payload = json.dumps(value).encode("utf-8")
+            payload = message.model_dump_json().encode("utf-8")
         except (TypeError, ValueError) as e:
             raise MessageSerializationError(
                 f"Cannot serialize message value to JSON: {e}"
@@ -87,7 +86,7 @@ class KafkaProducer:
 
         try:
             delivery_future = await self._producer.produce(
-                topic, value=payload, 
+                topic, value=payload,
             )
             msg = await delivery_future
         except KafkaException as e:
@@ -102,4 +101,4 @@ class KafkaProducer:
         )
 
 
-producer = KafkaProducer()
+kafka_producer = KafkaProducer()

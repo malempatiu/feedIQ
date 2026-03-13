@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .repo import FeedsRepository
 from .service import FeedsService
 from src.db.session import async_session
+from src.message_broker.feedback_producer import FeedbackTopicProducer
 
 
 @asynccontextmanager
@@ -12,5 +13,5 @@ async def get_feeds_service() -> AsyncGenerator[Tuple[FeedsService, AsyncSession
     """Context manager for FeedsService"""
     async with async_session() as session:
         feeds_repo = FeedsRepository(session)
-        feeds_service = FeedsService(feeds_repo)
+        feeds_service = FeedsService(feeds_repo, FeedbackTopicProducer())
         yield feeds_service, session
