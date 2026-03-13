@@ -9,14 +9,9 @@ interface Config {
     clientId: string;
     groupId: string;
     brokers: string[];
-    topics: typeof TOPICS;
-    events: typeof EVENTS;
   }
 
 }
-
-const TOPICS = ['feedbacks'] as const;
-const EVENTS = ['feedback.created'] as const;
 
 const config: Config = {
   port: Number(process.env.PORT) || 3000,
@@ -28,8 +23,6 @@ const config: Config = {
     groupId: process.env.KAFKA_GROUP_ID || 'jira-service-group',
     // Responsible for write and reading messages to partitions
     brokers: [process.env.KAFKA_BROKER_1 || 'localhost:9092'],
-    topics: TOPICS,
-    events: EVENTS,
   }
 };
 

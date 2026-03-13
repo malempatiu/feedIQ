@@ -7,7 +7,7 @@ class FeedbackCreatedDTO(BaseModel):
     title: str
     detail: str
     category: str
-    event: str | None = 'feedback.created'
+    event: str | None = 'feedback_created'
 
 class PublishFeedbackCreated:
     @staticmethod

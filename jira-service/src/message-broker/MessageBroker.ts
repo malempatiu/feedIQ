@@ -1,5 +1,6 @@
 import { logger } from '@/utils/logger.ts';
 import { Consumer } from './kafka/Consumer.ts';
+import { FeedbackTopicHandler } from '@/handlers/topics/feedbacks/FeedbacksTopicHandler.ts';
 
 class MessageBroker {
   private consumer?: Consumer;
@@ -12,8 +13,8 @@ class MessageBroker {
       // Initialize and connect consumer (if needed)
       this.consumer = new Consumer();
       await this.consumer.connect();
-      await this.consumer.subscribe(async (data) => {
-        logger.info(`Received message ${JSON.stringify(data)}`);
+      await this.consumer.subscribe({
+        feedbacks: new FeedbackTopicHandler()
       });
 
       this.healthy = true;

@@ -1,15 +1,8 @@
 import { config } from '@/config/config.ts';
+import type { TopicHandlers } from '@/handlers/types.ts';
 import { logger } from '@/utils/logger.ts';
-import {KafkaJS} from '@confluentinc/kafka-javascript';
-const {Kafka, logLevel} = KafkaJS;
-
-type MessageType = {
-  id: number,
-  title: string,
-  detail: string,
-  category: string,
-  event: string
-}
+import { KafkaJS } from '@confluentinc/kafka-javascript';
+const { Kafka, logLevel } = KafkaJS;
 
 class Consumer {
   private readonly consumer: KafkaJS.Consumer;
@@ -31,19 +24,19 @@ class Consumer {
   }
 
   connect = async () => {
-  if (this.isConnected) {
-    logger.info('Consumer already connected');
-    return;
-  }
-  try {
-    await this.consumer.connect();
-    this.isConnected = true;
-    logger.info('Consumer connected successfully');
-  } catch (error: any) {
-    logger.error('Unable to connect to consumer', error);
-    throw new Error(error);
-  }
-  }
+    if (this.isConnected) {
+      logger.info('Consumer already connected');
+      return;
+    }
+    try {
+      await this.consumer.connect();
+      this.isConnected = true;
+      logger.info('Consumer connected successfully');
+    } catch (error: any) {
+      logger.error('Unable to connect to consumer', error);
+      throw new Error(error);
+    }
+  };
 
   disconnect = async () => {
     if (!this.isConnected) return;
@@ -55,31 +48,28 @@ class Consumer {
       logger.error('Unable to disconnect consumer', error);
       throw new Error(error);
     }
-  }
+  };
 
   isHealthy = (): boolean => {
     return this.isConnected;
-  }
+  };
 
-  subscribe = async (messageHandler: (message: MessageType) => void) => {
-    await this.consumer.subscribe({ topics: [...config.kafka.topics] });
-
-    await this.consumer.run({
-      eachMessage: async ({ topic, partition, message }) => {
-        if (topic !== config.kafka.topics[0]) {
-          return;
+  subscribe = async (handlers: TopicHandlers) => {
+    try {
+      const topics = Object.keys(handlers) as (keyof TopicHandlers)[];
+      await this.consumer.subscribe({ topics });
+      await this.consumer.run({
+        eachMessage: async ({ topic, message }) => {
+          const topicHandler = handlers[topic as keyof TopicHandlers];
+          if (!(topicHandler && message.value)) return;
+          await topicHandler.handle(JSON.parse(message.value.toString()));
         }
-
-        if (message.value) {
-          const inputMessage: MessageType = JSON.parse(message.value.toString());
-          await messageHandler(inputMessage);
-          await this.consumer.commitOffsets([
-            { topic, partition, offset: (Number(message.offset) + 1).toString() },
-          ]);
-        }
-      },
-    });
-  }
+      });
+    } catch (e) {
+      logger.error(`Error stopping message broker: ${e}`);
+      process.exit(1);
+    }
+  };
 }
 
-export {Consumer};
+export { Consumer };
