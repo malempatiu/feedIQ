@@ -38,7 +38,10 @@ Users can submit feedback about applications, which is automatically categorized
 
 Demo of automatic categorization of user submitted feedback
 
-https://github.com/user-attachments/assets/bb90f696-a7b5-41d8-bf06-0c1918cf1cf2
+
+https://github.com/user-attachments/assets/7892ca6e-b8c8-4ed3-9f6b-dbedc7aedbe2
+
+
 
 ---
 
