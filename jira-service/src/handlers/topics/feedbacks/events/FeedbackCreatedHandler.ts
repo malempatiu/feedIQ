@@ -1,4 +1,5 @@
 import type { EventHandler, FeedbackMessage } from "@/handlers/types.ts";
+import { createJiraTicket } from "@/utils/api.ts";
 
 class FeedbackCreatedHandler implements EventHandler<FeedbackMessage> {
   readonly eventName: FeedbackMessage['event'];
@@ -6,7 +7,7 @@ class FeedbackCreatedHandler implements EventHandler<FeedbackMessage> {
     this.eventName = 'feedback_created';
   }
   async handle(message: FeedbackMessage): Promise<void> {
-    console.log('Feedback created:', message);
+    await createJiraTicket(message)
   }
 }
 
