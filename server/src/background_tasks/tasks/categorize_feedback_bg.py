@@ -22,6 +22,7 @@ async def categorize_feedback_background(ctx: Context):
 
         async with get_feeds_service() as (feeds_service, session):
             dto = FeedbackCreateDTO(title=event.title, detail=event.detail)
+
             async def categorize():
                 return await feeds_service.categorize_feedback(
                     id=event.id,
@@ -38,4 +39,4 @@ async def categorize_feedback_background(ctx: Context):
             f"Failed to categorize feedback: {str(e)}",
             exc_info=True
         )
-        raise  # Let Inngest handle retry
+        raise

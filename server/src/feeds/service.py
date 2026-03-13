@@ -3,11 +3,13 @@ from .dtos import FeedbackCreateDTO, FeedbackResponseDTO, FeedbacksResponseDTO, 
 from fastapi import HTTPException, status
 import math
 from src.workflows.categorize_feedback import categorize_feedback
-
+from src.message_broker.interfaces import IFeedbackTopicProducer
+from src.message_broker.events import FeedbackCreatedEvent
 
 class FeedsService:
-    def __init__(self, repo: IFeedsRepository):
+    def __init__(self, repo: IFeedsRepository, feedbackTopicProducer: IFeedbackTopicProducer):
         self.feeds_Repo = repo
+        self.feedback_topic_producer = feedbackTopicProducer
     
     async def create_feedback(self, user_id: int, dto: FeedbackCreateDTO):
         feedback = await self.feeds_Repo.create(user_id, dto)
@@ -47,9 +49,35 @@ class FeedsService:
         result = await self.feeds_Repo.update(id, dto)
         return result
     
+    async def publish_feedback_created(self, id: int | None, dto: FeedbackCreateDTO):
+        if not id:
+            raise ValueError('Feedback id is missing for publish_feedback_created!')
+        
+        if not dto.category:
+            raise ValueError(
+                'Feedback category is missing for publish_feedback_created!')
+        
+        await self.feedback_topic_producer.send_created(
+            message=FeedbackCreatedEvent(
+                id=id, 
+                title=dto.title, 
+                detail=dto.detail, 
+                category=dto.category,
+                event='feedback_created'
+            )
+        )
 
     async def categorize_feedback(self, id: int, dto: FeedbackCreateDTO):
         if not dto.category:
             category = await categorize_feedback(title=dto.title, detail=dto.detail)
             await self.update_feedback(id, FeedbackUpdateDTO(category=category))
+            await self.feedback_topic_producer.send_created(
+                message=FeedbackCreatedEvent(
+                    id=id,
+                    title=dto.title,
+                    detail=dto.detail,
+                    category=category,
+                    event='feedback_created'
+                )
+            )
 

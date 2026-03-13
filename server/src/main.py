@@ -1,10 +1,19 @@
 from fastapi import FastAPI
-from .feeds.router import feeds_router
-from .auth.router import user_router
+from src.feeds.router import feeds_router
+from src.auth.router import user_router
 from fastapi.middleware.cors import CORSMiddleware
 from inngest import fast_api
-from .background_tasks.client import inngest_client
-from .background_tasks.tasks.categorize_feedback_bg import categorize_feedback_background
+from src.background_tasks.client import inngest_client
+from src.background_tasks.tasks.categorize_feedback_bg import categorize_feedback_background
+import logging
+from contextlib import asynccontextmanager
+from src.message_broker.kafka.producer import kafka_producer
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 origins = [
     "http://localhost:5173",
@@ -12,12 +21,24 @@ origins = [
 
 version = 'v1'
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("Starting Kafka producer…")
+    await kafka_producer.start()
+
+    yield
+
+    logger.info("Stopping Kafka producer…")
+    await kafka_producer.stop()
+
 app = FastAPI(
     title='feedIQ server',
     description='A REST API for feedIQ (A product feedback app)',
     version=version,
     docs_url=f"/api/{version}/docs",
     redoc_url=f"/api/{version}/redoc",
+    lifespan=lifespan
 )
 
 app.add_middleware(
