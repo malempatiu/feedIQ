@@ -24,6 +24,7 @@ Users can submit feedback about applications, which is automatically categorized
 | Feedback submission and listing             | Done    |
 | AI categorisation pipeline                  | Done    |
 | Kafka microservice + Jira integration       | Done    |
+| Replace polling with SSE                    | InProgress |
 | AI feedback sentiment and priority pipeline | Planned |
 | Duplicate feedback detection                | Planned |
 | Sorting Feedbacks with AI                   | Planned |
